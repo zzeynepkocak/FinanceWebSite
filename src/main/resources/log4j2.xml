@@ -61,11 +61,10 @@
   <!-- ── Logger'lar ────────────────────────────────────────────── -->
   <Loggers>
 
-    <!-- Uygulama paketi -->
+    <!-- Uygulama paketi — KafkaAppender sadece docker profilinde env var varsa -->
     <Logger name="com.toyota.finance" level="DEBUG" additivity="false">
       <AppenderRef ref="ConsoleAppender"/>
       <AppenderRef ref="FileAppender"/>
-      <AppenderRef ref="KafkaAppender"/>
     </Logger>
 
     <!-- Spring Security gürültüsünü azalt -->
