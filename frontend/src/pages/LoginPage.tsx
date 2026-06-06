@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/KeycloakProvider'
 import { paths } from '../routes/paths'
 import styles from './LoginPage.module.css'
@@ -7,10 +7,12 @@ import styles from './LoginPage.module.css'
 export function LoginPage() {
   const { isAuthenticated, isLoading, login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [otp, setOtp] = useState(false)
+  const registeredSuccess = new URLSearchParams(location.search).get('registered') === '1'
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -73,6 +75,12 @@ export function LoginPage() {
         <div className={styles.card}>
           <h2 className={styles.cardTitle}>Hesabınıza giriş yapın</h2>
           <p className={styles.cardSub}>Kurumsal Keycloak SSO ile oturum açın</p>
+
+          {registeredSuccess && (
+            <div style={{ background: 'rgba(0,212,170,0.12)', border: '1px solid var(--profit)', borderRadius: 8, padding: '0.6rem 1rem', fontSize: '0.82rem', color: 'var(--profit)', fontWeight: 500, marginBottom: '1rem' }}>
+              ✓ Hesabınız oluşturuldu! Şimdi giriş yapabilirsiniz.
+            </div>
+          )}
 
           <form onSubmit={handleSubmit}>
             <div className={styles.field}>
