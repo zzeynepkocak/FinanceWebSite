@@ -132,9 +132,26 @@ export function DashboardPage() {
   const { user } = useAuth()
   const [hidden, setHidden] = useState(false)
   const [transferModal, setTransferModal] = useState(false)
+  const [transferIban, setTransferIban] = useState('')
+  const [transferTutar, setTransferTutar] = useState('')
+  const [transferSuccess, setTransferSuccess] = useState(false)
+  const [transferError, setTransferError] = useState('')
   const now = new Date().toLocaleString('tr-TR', {
     day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
   })
+
+  const handleTransfer = () => {
+    setTransferError('')
+    if (!transferIban.trim()) { setTransferError('Lütfen IBAN giriniz'); return }
+    if (!transferTutar || Number(transferTutar) <= 0) { setTransferError('Geçerli bir tutar giriniz'); return }
+    setTransferSuccess(true)
+    setTimeout(() => {
+      setTransferModal(false)
+      setTransferSuccess(false)
+      setTransferIban('')
+      setTransferTutar('')
+    }, 2000)
+  }
 
   return (
     <div className={styles.page}>
@@ -428,25 +445,40 @@ export function DashboardPage() {
               <button onClick={() => setTransferModal(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', fontSize: '1.2rem' }}>×</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div>
-                <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Kaynak Hesap</label>
-                <select style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '0.82rem', outline: 'none' }}>
-                  <option>Garanti TL Hesabı — ₺84.320</option>
-                  <option>Yapı Kredi Hesabı — ₺12.500</option>
-                </select>
-              </div>
-              <div>
-                <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Hedef / IBAN</label>
-                <input style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '0.82rem', outline: 'none', boxSizing: 'border-box' }} placeholder="TR00 0000 0000 0000 0000 00" />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Tutar (₺)</label>
-                <input type="number" style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '1rem', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-mono)', fontWeight: 700 }} placeholder="0.00" />
-              </div>
-              <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.25rem' }}>
-                <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setTransferModal(false)}>İptal</button>
-                <button className="btn btn-primary" style={{ flex: 1 }}>Transfer Yap</button>
-              </div>
+              {transferSuccess ? (
+                <div style={{ textAlign: 'center', padding: '1.5rem 0', color: 'var(--profit)' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✓</div>
+                  <div style={{ fontWeight: 700 }}>Transfer başarıyla gönderildi!</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '0.3rem' }}>₺{Number(transferTutar).toLocaleString('tr-TR')}</div>
+                </div>
+              ) : (
+                <>
+                  {transferError && (
+                    <div style={{ background: 'rgba(229,62,62,0.1)', border: '1px solid var(--loss)', borderRadius: 6, padding: '0.4rem 0.75rem', fontSize: '0.78rem', color: 'var(--loss)' }}>
+                      {transferError}
+                    </div>
+                  )}
+                  <div>
+                    <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Kaynak Hesap</label>
+                    <select style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '0.82rem', outline: 'none' }}>
+                      <option>Garanti TL Hesabı — ₺84.320</option>
+                      <option>Yapı Kredi Hesabı — ₺12.500</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Hedef / IBAN</label>
+                    <input value={transferIban} onChange={e => setTransferIban(e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '0.82rem', outline: 'none', boxSizing: 'border-box' }} placeholder="TR00 0000 0000 0000 0000 00" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginBottom: '0.3rem', display: 'block' }}>Tutar (₺)</label>
+                    <input type="number" value={transferTutar} onChange={e => setTransferTutar(e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', color: 'var(--text)', fontSize: '1rem', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-mono)', fontWeight: 700 }} placeholder="0.00" />
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.25rem' }}>
+                    <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setTransferModal(false)}>İptal</button>
+                    <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleTransfer}>Transfer Yap</button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
