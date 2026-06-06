@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type WidgetItem = {
   id: string; baslik: string; boyut: '1x1' | '2x1' | '2x2'; aktif: boolean; sabitledi: boolean
@@ -24,13 +26,57 @@ const TEMALAR = [
   { isim: 'Mor Gece', birincil: '#a855f7', ikincil: '#7c3aed' },
 ]
 
+const LS_WIDGETS_KEY = 'fp_widget_layout'
+const LS_THEME_KEY   = 'fp_theme_color'
+
+function loadWidgets(): WidgetItem[] {
+  try {
+    const saved = localStorage.getItem(LS_WIDGETS_KEY)
+    return saved ? JSON.parse(saved) : VARSAYILAN_WIDGETLAR
+  } catch {
+    return VARSAYILAN_WIDGETLAR
+  }
+}
+
+function loadTheme(): string {
+  return localStorage.getItem(LS_THEME_KEY) ?? '#00d4aa'
+}
+
 export function WidgetAyarlariPage() {
-  const [widgetlar, setWidgetlar] = useState<WidgetItem[]>(VARSAYILAN_WIDGETLAR)
+  const [widgetlar, setWidgetlar] = useState<WidgetItem[]>(loadWidgets)
   const [gizleMod, setGizleMod] = useState(false)
   const [secilenTema, setSecilenTema] = useState(0)
-  const [ozelRenk, setOzelRenk] = useState('#00d4aa')
+  const [ozelRenk, setOzelRenk] = useState(loadTheme)
   const [suruklenan, setSuruklenan] = useState<string | null>(null)
   const [ustunde, setUstunde] = useState<string | null>(null)
+  const { toast, show } = useToast()
+
+  // Sayfa açılınca kayıtlı temayı uygula
+  useEffect(() => {
+    const saved = localStorage.getItem(LS_THEME_KEY)
+    if (saved) applyTheme(saved)
+  }, [])
+
+  const applyTheme = (renk: string) => {
+    document.documentElement.style.setProperty('--accent', renk)
+    document.documentElement.style.setProperty('--accent-dim', `${renk}22`)
+    // İkincil renk için tema map'i kullan
+    const tema = TEMALAR.find(t => t.birincil === renk)
+    if (tema) {
+      document.documentElement.style.setProperty('--primary', tema.ikincil)
+    }
+  }
+
+  const handleTemaUygula = () => {
+    applyTheme(ozelRenk)
+    localStorage.setItem(LS_THEME_KEY, ozelRenk)
+    show('Tema uygulandı ve kaydedildi', 'success')
+  }
+
+  const handleDuzenKaydet = () => {
+    localStorage.setItem(LS_WIDGETS_KEY, JSON.stringify(widgetlar))
+    show('Dashboard düzeni başarıyla kaydedildi', 'success')
+  }
 
   const toggleWidget = (id: string) => {
     setWidgetlar(prev => prev.map(w => w.id === id ? { ...w, aktif: !w.aktif } : w))
@@ -64,8 +110,10 @@ export function WidgetAyarlariPage() {
           <h1 className={styles.pageTitle}>Widget & Dashboard Ayarları</h1>
           <p className={styles.pageSub}>Kişisel dashboard düzeninizi, tema ve gizlilik tercihlerinizi yönetin</p>
         </div>
-        <button className="btn btn-primary">Düzeni Kaydet</button>
+        <button className="btn btn-primary" onClick={handleDuzenKaydet}>Düzeni Kaydet</button>
       </div>
+
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Gizlilik Modu */}
       <div className={styles.sectionCard}>
@@ -141,18 +189,21 @@ export function WidgetAyarlariPage() {
             <div>
               <label style={{ fontSize: '0.72rem', color: 'var(--text-dim)', display: 'block', marginBottom: '0.4rem' }}>Özel Renk Seçici</label>
               <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center' }}>
-                <input type="color" value={ozelRenk} onChange={e => setOzelRenk(e.target.value)} style={{ width: 44, height: 36, borderRadius: 6, border: '1px solid var(--border)', cursor: 'pointer', padding: 2 }} />
-                <input className={styles.input} value={ozelRenk} onChange={e => setOzelRenk(e.target.value)} style={{ fontFamily: 'var(--font-mono)' }} />
+                <input type="color" value={ozelRenk} onChange={e => { setOzelRenk(e.target.value); setSecilenTema(-1) }} style={{ width: 44, height: 36, borderRadius: 6, border: '1px solid var(--border)', cursor: 'pointer', padding: 2 }} />
+                <input className={styles.input} value={ozelRenk} onChange={e => { setOzelRenk(e.target.value); setSecilenTema(-1) }} style={{ fontFamily: 'var(--font-mono)' }} />
               </div>
             </div>
-            <button className="btn btn-primary" style={{ width: '100%' }}>Temayı Uygula</button>
+            <button className="btn btn-primary" style={{ width: '100%' }} onClick={handleTemaUygula}>Temayı Uygula</button>
           </div>
         </div>
       </div>
 
       {/* Dashboard Önizleme */}
       <div className={styles.sectionCard}>
-        <div className={styles.cardHeader}><span className={styles.cardTitle}>Dashboard Düzen Önizlemesi (Sürükle & Bırak)</span></div>
+        <div className={styles.cardHeader}>
+          <span className={styles.cardTitle}>Dashboard Düzen Önizlemesi (Sürükle & Bırak)</span>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Sürükleyerek sıralamayı değiştirin, ardından "Düzeni Kaydet" ile kalıcı hale getirin</span>
+        </div>
         <div className={styles.cardBody}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
             {widgetlar.filter(w => w.aktif).map(w => (
