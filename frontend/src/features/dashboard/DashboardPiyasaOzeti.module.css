@@ -1,0 +1,41 @@
+/* ── DashboardPiyasaOzeti — quiet luxury ── */
+.card {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  padding:         1.25rem;
+  box-shadow:      inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.title {
+  margin:      0 0 1rem;
+  font-size:   0.78rem;
+  color:       var(--text-primary);
+  font-weight: 600;
+}
+
+.list {
+  list-style:     none;
+  margin:         0;
+  padding:        0;
+  display:        flex;
+  flex-direction: column;
+  gap:            0.2rem;
+}
+
+.item {
+  display:         flex;
+  justify-content: space-between;
+  padding:         0.4rem 0.5rem;
+  border-radius:   var(--radius-sm);
+  border-bottom:   1px solid rgba(255,255,255,0.04);
+  font-size:       0.8rem;
+  font-family:     var(--font-mono);
+  transition:      background 0.15s;
+  color:           var(--text-secondary);
+}
+
+.item:hover { background: rgba(255,255,255,0.03); }
+.item:last-child { border-bottom: none; }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FinansPortalı — Log4j2 Yapılandırması
+  ──────────────────────────────────────
+  Appender'lar:
+    Console  → JSON formatında stdout
+    RollingFile → logs/finance-portal.log (5 MB × 10)
+    Kafka   → log-topic konusuna yapılandırılabilir JSON mesajları
+              (docker profili aktifse; aksi hâlde sadece Console kullanılır)
+-->
+<Configuration status="WARN" monitorInterval="30">
+
+  <Properties>
+    <Property name="LOG_PATTERN">
+      %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+    </Property>
+    <Property name="LOG_DIR">logs</Property>
+    <Property name="APP_NAME">finance-portal</Property>
+  </Properties>
+
+  <!-- ── Appender'lar ──────────────────────────────────────────── -->
+  <Appenders>
+
+    <!-- 1. Console — geliştirme ortamı -->
+    <Console name="ConsoleAppender" target="SYSTEM_OUT">
+      <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+    </Console>
+
+    <!-- 2. JSON Console — production (structlog) -->
+    <Console name="JsonConsoleAppender" target="SYSTEM_OUT">
+      <JsonTemplateLayout eventTemplateUri="classpath:log4j2-json-layout.json"/>
+    </Console>
+
+    <!-- 3. Rolling File -->
+    <RollingFile name="FileAppender"
+                 fileName="${LOG_DIR}/${APP_NAME}.log"
+                 filePattern="${LOG_DIR}/${APP_NAME}-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="5MB"/>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingFile>
+
+    <!-- 4. Kafka Appender — log4j2.core.appender KafkaAppender
+         Bootstrap sunucusu ${env:KAFKA_BOOTSTRAP_SERVERS:-localhost:9092} den okunur.
+         Docker profilinde aktif edilir. -->
+    <Kafka name="KafkaAppender" topic="finance-logs" syncSend="false">
+      <PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger - %msg%n" charset="UTF-8"/>
+      <Property name="bootstrap.servers">${env:KAFKA_BOOTSTRAP_SERVERS:-localhost:9092}</Property>
+      <Property name="acks">0</Property>
+      <Property name="retries">0</Property>
+      <Property name="linger.ms">50</Property>
+      <Property name="batch.size">65536</Property>
+      <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+    </Kafka>
+
+  </Appenders>
+
+  <!-- ── Logger'lar ────────────────────────────────────────────── -->
+  <Loggers>
+
+    <!-- Uygulama paketi -->
+    <Logger name="com.toyota.finance" level="DEBUG" additivity="false">
+      <AppenderRef ref="ConsoleAppender"/>
+      <AppenderRef ref="FileAppender"/>
+      <AppenderRef ref="KafkaAppender"/>
+    </Logger>
+
+    <!-- Spring Security gürültüsünü azalt -->
+    <Logger name="org.springframework.security" level="INFO" additivity="false">
+      <AppenderRef ref="ConsoleAppender"/>
+    </Logger>
+
+    <!-- Hibernate SQL -->
+    <Logger name="org.hibernate.SQL" level="WARN" additivity="false">
+      <AppenderRef ref="ConsoleAppender"/>
+    </Logger>
+
+    <!-- Kafka -->
+    <Logger name="org.apache.kafka" level="WARN" additivity="false">
+      <AppenderRef ref="ConsoleAppender"/>
+    </Logger>
+
+    <!-- Root -->
+    <Root level="INFO">
+      <AppenderRef ref="ConsoleAppender"/>
+      <AppenderRef ref="FileAppender"/>
+    </Root>
+
+  </Loggers>
+
+</Configuration>

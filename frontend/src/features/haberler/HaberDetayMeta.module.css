@@ -1,0 +1,7 @@
+/* ── HaberDetayMeta — quiet luxury ── */
+.meta {
+  margin:      0 0 1rem;
+  font-size:   0.88rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+}

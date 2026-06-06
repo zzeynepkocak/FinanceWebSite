@@ -1,0 +1,17 @@
+/* ── PortfoyYeniButon — quiet luxury ── */
+.btn {
+  padding:       0.52rem 1.1rem;
+  background:    rgba(91,141,238,0.12);
+  border:        1px solid rgba(91,141,238,0.25);
+  color:         var(--accent);
+  border-radius: var(--radius-sm);
+  font-size:     0.78rem;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:    all 0.2s;
+}
+
+.btn:hover {
+  background:   rgba(91,141,238,0.20);
+  border-color: rgba(91,141,238,0.40);
+}

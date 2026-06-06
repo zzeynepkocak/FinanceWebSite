@@ -1,0 +1,49 @@
+# Maven / Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+
+# AI / editor local config
+.claude/
+.cursor/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# Logs
+*.log
+logs/
+error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / env
+.env
+.env.local
+.env.*.local
+
+# Docker volumes
+keycloak/data/
+
+# Test / temp
+test.txt
+.fake

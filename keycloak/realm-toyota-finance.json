@@ -1,0 +1,39 @@
+{
+  "realm": "toyota-finance",
+  "enabled": true,
+  "displayName": "Toyota Finance",
+  "clients": [
+    {
+      "clientId": "finance-portal-app",
+      "name": "Finance Portal Uygulaması",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["http://localhost:8080/*", "http://localhost:3000/*", "*"],
+      "webOrigins": ["*"]
+    }
+  ],
+  "users": [
+    {
+      "username": "kullanici",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "sifre123",
+          "temporary": true
+        }
+      ],
+      "realmRoles": ["user"]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "user"
+      }
+    ]
+  }
+}

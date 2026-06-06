@@ -1,0 +1,151 @@
+/* ── Header — Quiet Luxury · Deep Space ── */
+.header {
+  display:         flex;
+  align-items:     center;
+  gap:             1.5rem;
+  padding:         0.65rem 2rem;
+  background:      rgba(7,8,15,0.80);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom:   1px solid rgba(255,255,255,0.06);
+}
+
+.left {
+  display:     flex;
+  align-items: center;
+  gap:         1rem;
+  flex-shrink: 0;
+}
+
+.logoArea {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+}
+
+.logoIcon {
+  width:           24px;
+  height:          24px;
+  background:      rgba(91,141,238,0.12);
+  border:          1px solid rgba(91,141,238,0.25);
+  border-radius:   6px;
+  flex-shrink:     0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.logo {
+  font-weight:    600;
+  font-size:      1rem;
+  color:          var(--text-primary);
+  text-decoration: none;
+}
+
+.search {
+  min-width:     220px;
+  padding:       0.45rem 0.9rem;
+  background:    rgba(255,255,255,0.04);
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color:         var(--text-primary);
+  font-size:     0.82rem;
+  font-family:   var(--font-mono);
+  outline:       none;
+  transition:    border-color 0.18s;
+}
+
+.search:focus { border-color: rgba(91,141,238,0.35); }
+.search::placeholder { color: var(--text-muted); }
+
+.nav {
+  display:         flex;
+  align-items:     center;
+  gap:             0.25rem;
+  flex:            1;
+  justify-content: center;
+}
+
+.navLink,
+.navLinkActive {
+  padding:        0.4rem 0.75rem;
+  color:          var(--text-muted);
+  text-decoration: none;
+  border-radius:  var(--radius-sm);
+  font-size:      0.82rem;
+  transition:     all 0.15s;
+}
+
+.navLink:hover {
+  color:      var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+}
+
+.navLinkActive {
+  color:      var(--text-primary);
+  background: rgba(255,255,255,0.06);
+}
+
+.right {
+  display:     flex;
+  align-items: center;
+  gap:         0.75rem;
+  flex-shrink: 0;
+}
+
+.lang {
+  padding:       0.35rem 0.6rem;
+  background:    transparent;
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  font-size:     0.78rem;
+  font-family:   var(--font-mono);
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+
+.lang:hover {
+  border-color: rgba(255,255,255,0.14);
+  color:        var(--text-secondary);
+}
+
+.userLabel {
+  font-size:   0.82rem;
+  color:       var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.btnSecondary {
+  padding:       0.4rem 0.85rem;
+  background:    transparent;
+  color:         var(--text-secondary);
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  font-size:     0.78rem;
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+
+.btnSecondary:hover {
+  border-color: rgba(255,255,255,0.14);
+  color:        var(--text-primary);
+  background:   rgba(255,255,255,0.04);
+}
+
+.btnPrimary {
+  padding:        0.45rem 1rem;
+  background:     rgba(91,141,238,0.14);
+  border:         1px solid rgba(91,141,238,0.28);
+  color:          var(--accent);
+  border-radius:  var(--radius-sm);
+  font-size:      0.78rem;
+  font-weight:    600;
+  cursor:         pointer;
+  transition:     all 0.2s;
+}
+
+.btnPrimary:hover {
+  background:   rgba(91,141,238,0.22);
+  border-color: rgba(91,141,238,0.42);
+}

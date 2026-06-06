@@ -1,0 +1,21 @@
+/* ── AnalizIndikator — quiet luxury ── */
+.wrapper {
+  display:     flex;
+  align-items: center;
+  gap:         1rem;
+  flex-wrap:   wrap;
+}
+
+.label {
+  font-size: 0.9rem;
+  color:     var(--text-secondary);
+}
+
+.checkbox {
+  display:     flex;
+  align-items: center;
+  gap:         0.35rem;
+  font-size:   0.88rem;
+  cursor:      pointer;
+  color:       var(--text-secondary);
+}

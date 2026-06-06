@@ -1,0 +1,15 @@
+/* ── KarZararOzeti — quiet luxury ── */
+.placeholder {
+  min-height:      120px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           var(--text-muted);
+  font-size:       0.78rem;
+  background:      rgba(255,255,255,0.02);
+  border-radius:   var(--radius-sm);
+  border:          1px dashed rgba(255,255,255,0.08);
+  font-family:     var(--font-mono);
+  letter-spacing:  0.10em;
+  text-transform:  uppercase;
+}

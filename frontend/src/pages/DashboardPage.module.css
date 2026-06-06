@@ -1,0 +1,282 @@
+/* ═══════════════════════════════════════════════
+   DashboardPage — Quiet Luxury · Deep Space
+   ═══════════════════════════════════════════════ */
+
+.page {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.25rem;
+  animation:      fadeUp 0.35s ease both;
+}
+
+/* ── Page header ── */
+.pageHeader {
+  display:         flex;
+  align-items:     flex-end;
+  justify-content: space-between;
+  gap:             1rem;
+}
+
+.pageTitle {
+  font-size:   1.4rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+  line-height: 1.1;
+}
+
+.pageTitle span {
+  color: var(--accent);
+}
+
+.pageSub {
+  font-size:   0.7rem;
+  color:       var(--text-muted);
+  margin-top:  0.2rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+/* ── Metrics row ── */
+.metricsRow {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   0.9rem;
+}
+
+/* ── Metric card ── */
+.metricCard {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  padding:         1rem 1.1rem;
+  display:         flex;
+  flex-direction:  column;
+  gap:             0.4rem;
+  transition:      border-color 0.2s;
+  box-shadow:      inset 0 1px 0 rgba(255,255,255,0.03);
+  animation:       fadeUp 0.35s ease both;
+}
+
+.metricCard:hover {
+  border-color: var(--panel-border-hover);
+}
+
+.metricLabel {
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+}
+
+.metricValue {
+  font-family:    var(--font-mono);
+  font-size:      1.3rem;
+  color:          var(--text-primary);
+  letter-spacing: 0.02em;
+  font-weight:    600;
+}
+
+.metricChange {
+  font-size:      0.72rem;
+  font-weight:    500;
+  font-family:    var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+.up   { color: var(--positive); }
+.down { color: var(--negative); }
+
+.metricSpark {
+  height:     36px;
+  margin-top: 0.4rem;
+}
+
+/* ── Grid layouts ── */
+.grid2 {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   0.9rem;
+}
+
+.grid3 {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:                   0.9rem;
+}
+
+.grid4 {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap:                   0.9rem;
+}
+
+/* ── Section card ── */
+.sectionCard {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  /* overflow:hidden removed — backdrop-filter+overflow:hidden clips child SVG/canvas charts */
+  box-shadow:      inset 0 1px 0 rgba(255,255,255,0.03);
+  transition:      border-color 0.2s;
+}
+.sectionCard:hover {
+  border-color: var(--panel-border-hover);
+}
+
+.cardHeader {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  padding:         0.85rem 1.1rem;
+  border-bottom:   1px solid rgba(255,255,255,0.06);
+}
+
+.cardTitle {
+  font-size:   0.78rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.cardAction {
+  font-size:   0.65rem;
+  color:       var(--accent);
+  background:  none;
+  border:      none;
+  cursor:      pointer;
+  padding:     0.22rem 0.6rem;
+  border-radius: var(--radius-sm);
+  transition:  all 0.15s;
+  font-family: var(--font-mono);
+}
+.cardAction:hover {
+  background: rgba(91,141,238,0.08);
+}
+
+.cardBody { padding: 1rem 1.1rem; }
+
+/* ── Mini market table ── */
+.miniTable {
+  width:           100%;
+  border-collapse: collapse;
+  font-size:       0.78rem;
+  font-family:     var(--font-mono);
+}
+
+.miniTable thead tr th {
+  font-size:      0.6rem;
+  font-weight:    600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  padding:        0 0 0.6rem;
+  text-align:     left;
+}
+
+.miniTable thead tr th:last-child,
+.miniTable tbody tr td:last-child { text-align: right; }
+
+.miniTable tbody tr {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+
+.miniTable tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+.miniTable tbody tr td {
+  padding: 0.55rem 0;
+  color:   var(--text-secondary);
+}
+
+.miniTable tbody tr td:first-child {
+  color:       var(--text-primary);
+  font-weight: 500;
+  font-size:   0.75rem;
+}
+
+.tPrice  { color: var(--accent); }
+.tUp     { color: var(--positive); font-weight: 500; }
+.tDown   { color: var(--negative); font-weight: 500; }
+
+/* ── Donut chart ── */
+.donutWrap {
+  display:     flex;
+  align-items: center;
+  gap:         1.25rem;
+  padding:     0.5rem 0;
+}
+
+.donutSvg { flex-shrink: 0; }
+
+.donutLegend {
+  flex:           1;
+  display:        flex;
+  flex-direction: column;
+  gap:            0.55rem;
+}
+
+.legendItem {
+  display:     flex;
+  align-items: center;
+  gap:         0.55rem;
+  font-size:   0.77rem;
+  font-family: var(--font-mono);
+}
+
+.legendDot {
+  width:         7px;
+  height:        7px;
+  border-radius: 50%;
+  flex-shrink:   0;
+}
+
+.legendLabel { color: var(--text-secondary); flex: 1; }
+
+.legendPct {
+  font-family: var(--font-mono);
+  font-size:   0.74rem;
+  color:       var(--text-primary);
+  font-weight: 500;
+}
+
+/* ── P/L summary ── */
+.plGrid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   0.65rem;
+}
+
+.plItem {
+  background:    rgba(255,255,255,0.03);
+  border:        1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-sm);
+  padding:       0.7rem 0.9rem;
+  transition:    border-color 0.15s;
+}
+.plItem:hover { border-color: rgba(255,255,255,0.12); }
+
+.plItemLabel {
+  font-size:      0.6rem;
+  font-weight:    500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  margin-bottom:  0.3rem;
+  font-family:    var(--font-mono);
+}
+
+.plItemValue {
+  font-family:    var(--font-mono);
+  font-size:      1.05rem;
+  font-weight:    600;
+  letter-spacing: 0.02em;
+}
+
+.plItemValue.up      { color: var(--positive); }
+.plItemValue.down    { color: var(--negative); }
+.plItemValue.neutral { color: var(--accent); }

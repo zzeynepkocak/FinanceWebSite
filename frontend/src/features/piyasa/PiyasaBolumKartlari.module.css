@@ -1,0 +1,108 @@
+/* ── PiyasaBolumKartlari — quiet luxury ── */
+.wrapper {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.5rem;
+}
+
+.section {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-lg);
+  padding:         1.5rem;
+  box-shadow:      inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.sectionTitle {
+  display:     flex;
+  align-items: center;
+  gap:         0.6rem;
+  margin:      0 0 1.25rem;
+  font-size:   0.8rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.badge {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       28px;
+  height:          28px;
+  padding:         0 0.4rem;
+  background:      rgba(91,141,238,0.08);
+  color:           var(--accent);
+  border:          1px solid rgba(91,141,238,0.18);
+  border-radius:   50%;
+  font-size:       0.65rem;
+  font-weight:     500;
+  font-family:     var(--font-mono);
+}
+
+.cardGrid {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   0.75rem;
+}
+
+.dataCard {
+  display:       flex;
+  align-items:   center;
+  gap:           0.6rem;
+  padding:       0.75rem 1rem;
+  background:    rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  border:        1px solid rgba(255,255,255,0.06);
+  transition:    border-color 0.15s;
+}
+.dataCard:hover {
+  border-color: rgba(255,255,255,0.12);
+}
+
+.dataBadge {
+  flex-shrink:     0;
+  width:           30px;
+  height:          30px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  background:      rgba(91,141,238,0.08);
+  border:          1px solid rgba(91,141,238,0.15);
+  border-radius:   50%;
+  font-size:       0.68rem;
+  font-weight:     500;
+  color:           var(--accent);
+  font-family:     var(--font-mono);
+}
+
+.dataLabel {
+  flex:        1;
+  font-size:   0.78rem;
+  color:       var(--text-secondary);
+  min-width:   0;
+  font-family: var(--font-mono);
+}
+
+.positive {
+  font-size:   0.78rem;
+  font-weight: 500;
+  color:       var(--positive);
+  font-family: var(--font-mono);
+}
+
+.negative {
+  font-size:   0.78rem;
+  font-weight: 500;
+  color:       var(--negative);
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 900px) {
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .cardGrid { grid-template-columns: 1fr; }
+}

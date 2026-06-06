@@ -1,0 +1,184 @@
+/* ══════════════════════════════════════════════════════
+   AnalizPage — Quiet Luxury · Deep Space
+   ══════════════════════════════════════════════════════ */
+
+.page {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.25rem;
+}
+
+.pageTitle {
+  font-size:   1.2rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+/* ── Controls bar ── */
+.controls {
+  display:         flex;
+  align-items:     center;
+  gap:             0.75rem;
+  flex-wrap:       wrap;
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  padding:         0.75rem 1rem;
+}
+
+.controlsLabel {
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+}
+
+.select {
+  padding:       0.4rem 0.75rem;
+  background:    rgba(255,255,255,0.04);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  color:         var(--text-primary);
+  font-size:     0.8rem;
+  font-family:   var(--font-mono);
+  outline:       none;
+  cursor:        pointer;
+  transition:    border-color 0.18s;
+}
+.select:focus { border-color: rgba(91,141,238,0.35); }
+
+.divider {
+  width:      1px;
+  height:     20px;
+  background: var(--panel-border);
+}
+
+.periodBtn {
+  padding:       0.35rem 0.75rem;
+  background:    transparent;
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  font-size:     0.72rem;
+  font-weight:   500;
+  font-family:   var(--font-mono);
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+.periodBtn:hover { color: var(--text-primary); border-color: var(--panel-border-hover); }
+.periodBtnActive {
+  background:   rgba(91,141,238,0.10) !important;
+  border-color: rgba(91,141,238,0.30) !important;
+  color:        var(--accent) !important;
+}
+
+.indBtns {
+  margin-left: auto;
+  display:     flex;
+  gap:         0.4rem;
+}
+
+.indBtn {
+  padding:       0.35rem 0.75rem;
+  background:    transparent;
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  font-size:     0.7rem;
+  font-weight:   500;
+  font-family:   var(--font-mono);
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+.indBtnActive {
+  background:   rgba(91,141,238,0.10);
+  border-color: rgba(91,141,238,0.30);
+  color:        var(--accent);
+}
+
+/* ── Chart card ── */
+.chartCard {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  /* overflow:hidden intentionally omitted — clashes with backdrop-filter+SVG rendering */
+}
+
+.chartHeader {
+  display:       flex;
+  align-items:   center;
+  gap:           1rem;
+  padding:       0.85rem 1.1rem;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.chartSym {
+  font-family: var(--font-mono);
+  font-size:   1rem;
+  color:       var(--text-primary);
+  font-weight: 600;
+}
+
+.chartPrice {
+  font-family: var(--font-mono);
+  font-size:   1.05rem;
+  color:       var(--text-primary);
+}
+
+.chartChg {
+  font-size:   0.78rem;
+  font-weight: 600;
+}
+
+.up   { color: var(--positive); }
+.down { color: var(--negative); }
+
+.chartBody {
+  padding:    1.25rem 1.1rem;
+  min-height: 300px;           /* ensures container always has height for ResizeObserver */
+}
+
+.chartSvgWrap {
+  width:    100%;
+  height:   280px;
+  position: relative;
+}
+
+/* ── Stats row below chart ── */
+.statsRow {
+  display:               grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:                   0.9rem;
+}
+
+.statCard {
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding:       0.9rem 1rem;
+  transition:    border-color 0.2s;
+}
+.statCard:hover { border-color: var(--panel-border-hover); }
+
+.statLabel {
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  margin-bottom:  0.3rem;
+}
+
+.statVal {
+  font-family: var(--font-mono);
+  font-size:   1rem;
+  color:       var(--text-primary);
+  font-weight: 600;
+}

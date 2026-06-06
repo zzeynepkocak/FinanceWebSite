@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finans Portalı — Piyasayı Anlamlandır</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════
+       TICKER BAR
+  ══════════════════════════════════ -->
+  <div class="ticker-wrap" id="tickerWrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="ticker-label">BIST100</span><span class="ticker-val up">13.915 ▲+0.28%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">USD/TRY</span><span class="ticker-val up">38,42 ▲+0.15%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">Altın</span><span class="ticker-val down">2.847 ▼-0.12%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">THYAO</span><span class="ticker-val up">287,50 ▲+2.1%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">ASELS</span><span class="ticker-val up">44,30 ▲+0.9%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/TRY</span><span class="ticker-val up">41,85 ▲+0.22%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">BTC/USD</span><span class="ticker-val up">64.120 ▲+1.9%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">Gümüş</span><span class="ticker-val down">31,20 ▼-0.45%</span></span>
+      <span class="ticker-sep">·</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ticker-label">BIST100</span><span class="ticker-val up">13.915 ▲+0.28%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">USD/TRY</span><span class="ticker-val up">38,42 ▲+0.15%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">Altın</span><span class="ticker-val down">2.847 ▼-0.12%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">THYAO</span><span class="ticker-val up">287,50 ▲+2.1%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">ASELS</span><span class="ticker-val up">44,30 ▲+0.9%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/TRY</span><span class="ticker-val up">41,85 ▲+0.22%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">BTC/USD</span><span class="ticker-val up">64.120 ▲+1.9%</span></span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item"><span class="ticker-label">Gümüş</span><span class="ticker-val down">31,20 ▼-0.45%</span></span>
+      <span class="ticker-sep">·</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Finans<span>Portalı</span></a>
+      <ul class="nav-links">
+        <li><a href="#piyasalar">Piyasalar</a></li>
+        <li><a href="#portfoy">Portföyüm</a></li>
+        <li><a href="#haberler">Haberler</a></li>
+        <li><a href="#analiz">Analiz</a></li>
+      </ul>
+      <a href="#" class="btn-login">Giriş Yap</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       HERO — Three.js canvas burada
+  ══════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <canvas id="three-canvas"></canvas>
+    <!-- Gradient overlay so text is readable -->
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">— Yapay Zeka Destekli Terminal</p>
+      <h1 class="hero-title">
+        <span class="hero-line">Piyasayı</span>
+        <span class="hero-line hero-accent">Anlamlandır.</span>
+      </h1>
+      <p class="hero-sub">
+        Yapay zeka destekli finansal terminal.<br/>
+        BIST, döviz, altın — tek ekranda.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary">Ücretsiz Başla</a>
+        <a href="#" class="btn-outline">
+          <span class="play-icon">▶</span> Demo İzle
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-indicator">
+      <span>Keşfet</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 1 — CANLI PİYASA ÖZETİ
+  ══════════════════════════════════ -->
+  <section class="section section-market" id="piyasalar">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-tag">Canlı Veriler</span>
+        <h2 class="section-title">Canlı Piyasa Özeti</h2>
+        <p class="section-sub">Gerçek zamanlı verilerle piyasayı takip et</p>
+      </header>
+
+      <div class="metrics-grid">
+        <!-- BIST 100 -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-symbol">BIST 100</span>
+            <span class="metric-dot up">●</span>
+          </div>
+          <div class="metric-value up">13.915</div>
+          <div class="metric-change up">▲ +0,28% <span class="metric-abs">+38,94</span></div>
+          <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#00d4aa" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polygon points="0,35 15,30 30,25 45,28 60,20 75,15 90,18 105,10 120,8 120,40 0,40" fill="url(#g1)"/>
+            <polyline points="0,35 15,30 30,25 45,28 60,20 75,15 90,18 105,10 120,8" fill="none" stroke="#00d4aa" stroke-width="1.8"/>
+          </svg>
+        </div>
+
+        <!-- USD/TRY -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-symbol">USD/TRY</span>
+            <span class="metric-dot up">●</span>
+          </div>
+          <div class="metric-value up">38,42</div>
+          <div class="metric-change up">▲ +0,15% <span class="metric-abs">+0,058</span></div>
+          <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#00d4aa" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polygon points="0,30 15,28 30,32 45,25 60,22 75,20 90,18 105,15 120,12 120,40 0,40" fill="url(#g2)"/>
+            <polyline points="0,30 15,28 30,32 45,25 60,22 75,20 90,18 105,15 120,12" fill="none" stroke="#00d4aa" stroke-width="1.8"/>
+          </svg>
+        </div>
+
+        <!-- Altın -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-symbol">Altın (gr)</span>
+            <span class="metric-dot down">●</span>
+          </div>
+          <div class="metric-value down">2.847</div>
+          <div class="metric-change down">▼ -0,12% <span class="metric-abs">-3,42</span></div>
+          <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff4757" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#ff4757" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polygon points="0,10 15,12 30,8 45,14 60,18 75,22 90,25 105,28 120,32 120,40 0,40" fill="url(#g3)"/>
+            <polyline points="0,10 15,12 30,8 45,14 60,18 75,22 90,25 105,28 120,32" fill="none" stroke="#ff4757" stroke-width="1.8"/>
+          </svg>
+        </div>
+
+        <!-- Gümüş -->
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-symbol">Gümüş (gr)</span>
+            <span class="metric-dot down">●</span>
+          </div>
+          <div class="metric-value down">31,20</div>
+          <div class="metric-change down">▼ -0,45% <span class="metric-abs">-0,14</span></div>
+          <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff4757" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#ff4757" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <polygon points="0,8 15,10 30,12 45,18 60,22 75,25 90,28 105,32 120,36 120,40 0,40" fill="url(#g4)"/>
+            <polyline points="0,8 15,10 30,12 45,18 60,22 75,25 90,28 105,32 120,36" fill="none" stroke="#ff4757" stroke-width="1.8"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 2 — ÖZELLİKLER + Three.js spiral
+  ══════════════════════════════════ -->
+  <section class="section section-features" id="analiz">
+    <div class="container features-layout">
+      <div class="features-left">
+        <span class="section-tag">Neden FinansPortalı?</span>
+        <h2 class="section-title features-title">Güçlü Altyapı,<br/>Akıllı Analiz</h2>
+
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <div class="feature-body">
+              <h3>Güvenli Erişim</h3>
+              <p>Keycloak OAuth2 ile korunan hesabınız. Enterprise seviyesi kimlik doğrulama.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <div class="feature-body">
+              <h3>Canlı Veriler</h3>
+              <p>TCMB ve BIST verileri, 2 saniyede güncellenir. Hiçbir fırsatı kaçırma.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-body">
+              <h3>AI Analiz</h3>
+              <p>NLP ile haber sentiment analizi. Pozitif/Negatif skoru. Piyasayı hisset.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Three.js canvas is fixed, this acts as the visual placeholder -->
+      <div class="features-right" id="featuresRight">
+        <div class="canvas-frame">
+          <span class="canvas-label">3D Spiral — canlı</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 3 — PORTFÖY DEMO
+  ══════════════════════════════════ -->
+  <section class="section section-portfolio" id="portfoy">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-tag">Portföy Yönetimi</span>
+        <h2 class="section-title">Portföyünü Tek<br/>Bakışta Gör</h2>
+      </header>
+
+      <div class="portfolio-layout">
+        <div class="portfolio-table-wrap">
+          <table class="portfolio-table">
+            <thead>
+              <tr>
+                <th>Sembol</th>
+                <th>Adet</th>
+                <th>Maliyet</th>
+                <th>Güncel</th>
+                <th>P / L</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="asset-sym">THYAO</span></td>
+                <td>820</td>
+                <td>₺290,50</td>
+                <td>₺287,20</td>
+                <td class="down">−3.300 ₺ <span class="pct">(%−1,1)</span></td>
+              </tr>
+              <tr>
+                <td><span class="asset-sym">ASELS</span></td>
+                <td>1.250</td>
+                <td>₺42,10</td>
+                <td>₺44,30</td>
+                <td class="up">+2.750 ₺ <span class="pct">(+5,2%)</span></td>
+              </tr>
+              <tr>
+                <td><span class="asset-sym">BTC/USD</span></td>
+                <td>0,42</td>
+                <td>$61.400</td>
+                <td>$64.120</td>
+                <td class="up">+1.142 $ <span class="pct">(+1,9%)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="portfolio-aside">
+          <div class="pie-wrap">
+            <div class="pie-chart" role="img" aria-label="Varlık dağılımı pastası"></div>
+            <ul class="pie-legend">
+              <li><span class="dot" style="background:#00d4aa"></span>Hisseler %48</li>
+              <li><span class="dot" style="background:#4ecdc4"></span>Döviz %22</li>
+              <li><span class="dot" style="background:#6c5ce7"></span>Kripto %18</li>
+              <li><span class="dot" style="background:#a29bfe"></span>Tahvil %12</li>
+            </ul>
+          </div>
+
+          <div class="profit-box">
+            <p class="profit-label">Toplam P/L</p>
+            <p class="profit-total">+₺28.450</p>
+            <p class="profit-sub">Bu ay · güncelleniyor</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 4 — TEKNOLOJİ STACK
+  ══════════════════════════════════ -->
+  <section class="section section-tech">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-tag">Teknoloji</span>
+        <h2 class="section-title">Kurumsal Altyapı,<br/>Kişisel Deneyim</h2>
+      </header>
+
+      <div class="tech-grid">
+        <div class="tech-badge"><span class="ti">☕</span><span>Java 21</span></div>
+        <div class="tech-badge"><span class="ti">🍃</span><span>Spring Boot</span></div>
+        <div class="tech-badge"><span class="ti">⚛️</span><span>React</span></div>
+        <div class="tech-badge"><span class="ti">🐘</span><span>PostgreSQL</span></div>
+        <div class="tech-badge"><span class="ti">🐳</span><span>Docker</span></div>
+        <div class="tech-badge"><span class="ti">🔑</span><span>Keycloak</span></div>
+        <div class="tech-badge"><span class="ti">📨</span><span>Kafka</span></div>
+        <div class="tech-badge"><span class="ti">🔍</span><span>OpenSearch</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 5 — KULLANICI SENARYOLARI
+  ══════════════════════════════════ -->
+  <section class="section section-scenarios" id="haberler">
+    <div class="container">
+      <header class="section-header">
+        <span class="section-tag">Nasıl Çalışır?</span>
+        <h2 class="section-title">Adım Adım<br/>Finans Deneyimi</h2>
+      </header>
+
+      <div class="scenarios-grid">
+        <div class="scenario-card">
+          <div class="sc-icon">🚀</div>
+          <h3>Giriş &amp; Dashboard</h3>
+          <ol>
+            <li>Keycloak ile güvenli giriş yap</li>
+            <li>Kişisel dashboard'una ulaş</li>
+            <li>Portföy özetini tek bakışta gör</li>
+          </ol>
+        </div>
+        <div class="scenario-card">
+          <div class="sc-icon">📈</div>
+          <h3>Piyasa Analizi</h3>
+          <ol>
+            <li>Canlı BIST ve döviz verilerini takip et</li>
+            <li>Teknik grafikleri incele</li>
+            <li>AI destekli trend sinyallerini al</li>
+          </ol>
+        </div>
+        <div class="scenario-card">
+          <div class="sc-icon">💼</div>
+          <h3>Sanal Alım</h3>
+          <ol>
+            <li>Portföyüne yeni varlık ekle</li>
+            <li>Gerçek fiyatlarla simüle et</li>
+            <li>Kar/zarar anında hesaplanır</li>
+          </ol>
+        </div>
+        <div class="scenario-card">
+          <div class="sc-icon">📰</div>
+          <h3>Haber Takibi</h3>
+          <ol>
+            <li>Finans haberlerini anında gör</li>
+            <li>NLP sentiment skoru oku</li>
+            <li>Piyasaya etkisini öngör</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BÖLÜM 6 — CTA + FOOTER
+  ══════════════════════════════════ -->
+  <section class="section section-cta">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-glow" aria-hidden="true"></div>
+        <h2 class="cta-title">
+          Finansal özgürlüğün<br/><em>terminal'ine giriş yap</em>
+        </h2>
+        <p class="cta-sub">Bugün başla, piyasaların bir adım önünde ol.</p>
+        <a href="#" class="btn-primary btn-lg">Ücretsiz Hesap Oluştur</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">Finans<span>Portalı</span></a>
+        <p>Toyota &amp; 32Bit 2026 Staj Programı</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#piyasalar">Piyasalar</a>
+        <a href="#portfoy">Portföyüm</a>
+        <a href="#haberler">Haberler</a>
+        <a href="#analiz">Analiz</a>
+      </nav>
+      <div class="footer-credit">
+        <p>Hazırlayan: <strong>Zeynep Koçak</strong></p>
+        <a href="https://github.com/zzeynepkocak" target="_blank" rel="noopener">github.com/zzeynepkocak</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Finans Portalı. Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

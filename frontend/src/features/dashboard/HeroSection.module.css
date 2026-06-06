@@ -1,0 +1,91 @@
+/* ── Hero section — quiet luxury ── */
+.hero {
+  position:   relative;
+  padding:    2.5rem 0 3rem;
+  text-align: center;
+  max-width:  720px;
+  margin:     0 auto 2.5rem;
+}
+
+.titleLine1 {
+  margin:      0 0 0.2rem;
+  font-size:   clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.titleLine2 {
+  margin:      0 0 1rem;
+  font-size:   clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color:       var(--accent);
+}
+
+.desc {
+  margin:      0 0 1.5rem;
+  font-size:   0.9rem;
+  line-height: 1.7;
+  color:       var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.buttons {
+  display:         flex;
+  gap:             0.75rem;
+  justify-content: center;
+  flex-wrap:       wrap;
+  margin-bottom:   2.5rem;
+}
+
+.btnPrimary {
+  padding:       0.6rem 1.4rem;
+  background:    rgba(91,141,238,0.14);
+  color:         var(--accent);
+  border:        1px solid rgba(91,141,238,0.28);
+  border-radius: 8px;
+  font-size:     0.85rem;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:    all 0.2s;
+}
+.btnPrimary:hover {
+  background:   rgba(91,141,238,0.22);
+  border-color: rgba(91,141,238,0.42);
+}
+
+.btnSecondary {
+  padding:       0.6rem 1.4rem;
+  background:    transparent;
+  color:         var(--text-secondary);
+  border:        1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  font-size:     0.85rem;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:    all 0.2s;
+}
+.btnSecondary:hover {
+  background:   rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.18);
+  color:        var(--text-primary);
+}
+
+.bottomLeft {
+  text-align:   left;
+  margin-top:   2.5rem;
+  padding-left: 0.5rem;
+}
+
+.grafiklerTitle {
+  margin:      0 0 0.35rem;
+  font-size:   1rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.grafiklerDesc {
+  margin:      0;
+  font-size:   0.8rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+}

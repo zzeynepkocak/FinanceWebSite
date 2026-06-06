@@ -1,0 +1,33 @@
+/* ── AnalizEnstrumanSecici — quiet luxury ── */
+.row {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+  flex-wrap:   wrap;
+}
+
+.label {
+  font-size: 0.9rem;
+  color:     var(--text-secondary);
+}
+
+.select {
+  padding:       0.45rem 0.75rem;
+  border:        1px solid rgba(255,255,255,0.08);
+  background:    rgba(255,255,255,0.04);
+  border-radius: 6px;
+  font-size:     0.88rem;
+  color:         var(--text-primary);
+  outline:       none;
+  font-family:   var(--font-mono);
+  transition:    border-color 0.18s;
+}
+
+.select:focus {
+  border-color: rgba(91,141,238,0.35);
+}
+
+.hint {
+  font-size: 0.82rem;
+  color:     var(--text-muted);
+}

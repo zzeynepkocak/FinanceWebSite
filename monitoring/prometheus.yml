@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# ── Scrape Targets ────────────────────────────────────────────
+scrape_configs:
+
+  # Spring Boot Actuator / Micrometer Prometheus endpoint
+  - job_name: 'finance-portal-backend'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['backend:8081']
+    scrape_interval: 10s
+
+  # OpenTelemetry Collector metrics
+  - job_name: 'otel-collector'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['otel-collector:8889']
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

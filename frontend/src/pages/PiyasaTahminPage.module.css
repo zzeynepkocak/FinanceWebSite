@@ -1,0 +1,666 @@
+/* ══════════════════════════════════════════════════════
+   PiyasaTahminPage — Quiet Luxury · Deep Space
+   ══════════════════════════════════════════════════════ */
+
+.page {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.1rem;
+}
+
+/* ── Başlık ── */
+.header {
+  display:         flex;
+  align-items:     flex-end;
+  justify-content: space-between;
+  gap:             1rem;
+  flex-wrap:       wrap;
+}
+
+.baslik {
+  font-size:   1.3rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+  line-height: 1.2;
+  margin:      0;
+}
+
+.baslik span { color: var(--accent); }
+
+.altBaslik {
+  font-size:   0.72rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+  margin:      0.25rem 0 0;
+}
+
+.kontroller {
+  display:   flex;
+  align-items: center;
+  gap:       0.65rem;
+  flex-wrap: wrap;
+}
+
+.sonGuncelleme {
+  display:       flex;
+  align-items:   center;
+  gap:           0.4rem;
+  font-size:     0.68rem;
+  color:         var(--text-muted);
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding:       0.45rem 0.85rem;
+  font-family:   var(--font-mono);
+}
+
+.canliNokta {
+  width:         7px;
+  height:        7px;
+  background:    var(--positive);
+  border-radius: 50%;
+  opacity:       0.75;
+}
+
+.duraklamiNokta {
+  width:         7px;
+  height:        7px;
+  background:    #fbbf24;
+  border-radius: 50%;
+}
+
+.select {
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  color:         var(--text-primary);
+  font-size:     0.78rem;
+  font-family:   var(--font-mono);
+  padding:       0.45rem 0.75rem;
+  cursor:        pointer;
+  outline:       none;
+  transition:    border-color 0.18s;
+}
+
+.select:focus { border-color: rgba(91,141,238,0.35); }
+
+.btn {
+  border:        1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding:       0.45rem 1rem;
+  font-size:     0.75rem;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:    all 0.18s;
+  font-family:   var(--font-mono);
+}
+
+.btnDurdur {
+  background:   rgba(248,113,113,0.10);
+  color:        var(--negative);
+  border-color: rgba(248,113,113,0.25);
+}
+
+.btnBaslat {
+  background:   rgba(74,222,128,0.10);
+  color:        var(--positive);
+  border-color: rgba(74,222,128,0.25);
+}
+
+.btn:hover { opacity: 0.8; }
+
+/* ── Özet Satırı ── */
+.ozetSatir {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   0.75rem;
+}
+
+.ozetKart {
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding:       0.85rem 1rem;
+  cursor:        pointer;
+  transition:    border-color 0.15s;
+}
+
+.ozetKart:hover     { border-color: var(--panel-border-hover); }
+.ozetKartSecili     { border-color: rgba(91,141,238,0.40) !important; background: rgba(91,141,238,0.06) !important; }
+
+.ozetEtiket {
+  font-size:      0.6rem;
+  font-weight:    500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  margin-bottom:  0.35rem;
+}
+
+.ozetSembol {
+  font-size:   0.88rem;
+  font-weight: 700;
+  color:       var(--text-primary);
+}
+
+.ozetFiyat {
+  font-family: var(--font-mono);
+  font-size:   1.05rem;
+  color:       var(--text-primary);
+  font-weight: 600;
+  margin:      0.15rem 0;
+}
+
+.ozetDegisim {
+  font-size:   0.75rem;
+  font-weight: 500;
+}
+
+/* ── Gövde ── */
+.govde {
+  display:               grid;
+  grid-template-columns: 320px 1fr;
+  gap:                   1rem;
+  min-height:            0;
+}
+
+/* ── Liste Paneli ── */
+.listePanel {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.5rem;
+  min-height:     0;
+}
+
+.filtreSatiri {
+  display:   flex;
+  gap:       0.3rem;
+  flex-wrap: wrap;
+}
+
+.filtreBtnu {
+  background:     var(--panel-bg);
+  border:         1px solid var(--panel-border);
+  border-radius:  var(--radius-sm);
+  color:          var(--text-muted);
+  font-size:      0.68rem;
+  font-weight:    500;
+  padding:        0.3rem 0.65rem;
+  cursor:         pointer;
+  transition:     all 0.15s;
+  font-family:    var(--font-mono);
+  text-transform: capitalize;
+}
+
+.filtreAktif {
+  background:   rgba(91,141,238,0.10);
+  border-color: rgba(91,141,238,0.28);
+  color:        var(--accent);
+}
+
+.liste {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.4rem;
+  overflow-y:     auto;
+  max-height:     680px;
+  padding-right:  2px;
+}
+
+.liste::-webkit-scrollbar       { width: 4px; }
+.liste::-webkit-scrollbar-track { background: transparent; }
+.liste::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+.listeOgesi {
+  background:      var(--panel-bg);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-sm);
+  padding:         0.7rem 0.85rem;
+  cursor:          pointer;
+  display:         flex;
+  justify-content: space-between;
+  align-items:     flex-start;
+  transition:      border-color 0.1s, background 0.1s;
+}
+
+.listeOgesi:hover  { border-color: var(--panel-border-hover); }
+
+.listeOgesiSecili {
+  border-color: rgba(91,141,238,0.40) !important;
+  background:   rgba(91,141,238,0.06) !important;
+}
+
+.ogeSol {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.2rem;
+  flex:           1;
+  min-width:      0;
+}
+
+.ogeSinif {
+  font-size:      0.6rem;
+  font-weight:    500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family:    var(--font-mono);
+  padding:        0.15rem 0.45rem;
+  border-radius:  4px;
+  display:        inline-block;
+  width:          fit-content;
+}
+
+.ogeSembol {
+  font-size:   0.86rem;
+  font-weight: 700;
+  color:       var(--text-primary);
+}
+
+.ogeIsim {
+  font-size:     0.66rem;
+  color:         var(--text-muted);
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  max-width:     130px;
+  font-family:   var(--font-mono);
+}
+
+.ogeSag {
+  display:        flex;
+  flex-direction: column;
+  align-items:    flex-end;
+  gap:            0.1rem;
+}
+
+.ogeFiyat {
+  font-family: var(--font-mono);
+  font-size:   0.82rem;
+  font-weight: 600;
+  color:       var(--text-primary);
+}
+
+.ogeDegisim {
+  font-size:   0.7rem;
+  font-weight: 500;
+}
+
+.ogeTahmin {
+  font-size:   0.62rem;
+  font-weight: 500;
+  margin-top:  2px;
+  font-family: var(--font-mono);
+}
+
+/* ── Detay Paneli ── */
+.detayPanel {
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
+  min-width:      0;
+}
+
+.detayBaslik {
+  background:      var(--panel-bg);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-sm);
+  padding:         1rem 1.25rem;
+  display:         flex;
+  align-items:     flex-start;
+  justify-content: space-between;
+  gap:             1rem;
+}
+
+.detaySinif {
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-family:    var(--font-mono);
+  padding:        0.2rem 0.55rem;
+  border-radius:  4px;
+}
+
+.detaySembolBuyuk {
+  font-size:   1.2rem;
+  font-weight: 700;
+  color:       var(--text-primary);
+}
+
+.detayIsim {
+  font-size:   0.78rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.detayFiyatBuyuk {
+  font-family: var(--font-mono);
+  font-size:   1.9rem;
+  font-weight: 700;
+  color:       var(--text-primary);
+}
+
+.detayDegisim {
+  font-size:   0.95rem;
+  font-weight: 600;
+}
+
+/* ── Grafik ── */
+.buyukGrafik {
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding:       1rem 1.25rem 0.75rem;
+  overflow:      hidden;
+}
+
+.buyukGrafik svg { width: 100%; height: auto; }
+
+.grafikAlt {
+  display:         flex;
+  justify-content: space-between;
+  margin-top:      0.5rem;
+  font-size:       0.7rem;
+  color:           var(--text-muted);
+  font-family:     var(--font-mono);
+}
+
+.grafikAlt b { color: var(--text-primary); }
+
+/* ── Tahmin Kutusu ── */
+.tahminKutu {
+  background:     var(--panel-bg);
+  border:         1px solid var(--panel-border);
+  border-radius:  var(--radius-sm);
+  padding:        1.1rem 1.25rem;
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
+}
+
+.tahminBaslik {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  font-size:       0.82rem;
+  font-weight:     600;
+  color:           var(--text-primary);
+}
+
+.tahminGuven {
+  font-size:     0.68rem;
+  background:    rgba(74,222,128,0.08);
+  color:         var(--positive);
+  border:        1px solid rgba(74,222,128,0.20);
+  border-radius: var(--radius-sm);
+  padding:       0.2rem 0.65rem;
+  font-family:   var(--font-mono);
+}
+
+/* ── Yön Göstergesi ── */
+.yonGosterge {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.5rem;
+}
+
+.yonCubuk {
+  position:     relative;
+  height:       10px;
+  border-radius: 5px;
+  overflow:     hidden;
+}
+
+.yonIbre {
+  position:     absolute;
+  top:          -3px;
+  transform:    translateX(-50%);
+  width:        3px;
+  height:       16px;
+  background:   rgba(255,255,255,0.80);
+  border-radius: 2px;
+  transition:   left 0.4s ease;
+}
+
+.yonEtiketler {
+  display:         flex;
+  justify-content: space-between;
+  font-size:       0.65rem;
+  font-weight:     500;
+  font-family:     var(--font-mono);
+}
+
+.yonPuan {
+  text-align:  center;
+  font-size:   0.75rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Trend ── */
+.trendSatir {
+  display:     flex;
+  align-items: center;
+  gap:         0.65rem;
+}
+
+.trendEtiket {
+  font-size:   0.72rem;
+  color:       var(--text-muted);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+.trendBadge {
+  font-size:     0.75rem;
+  font-weight:   600;
+  padding:       0.3rem 0.85rem;
+  border-radius: 100px;
+  font-family:   var(--font-mono);
+}
+
+/* ── Hedefler ── */
+.hedefler {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.5rem;
+}
+
+.hedefBaslik {
+  font-size:      0.62rem;
+  font-weight:    500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+}
+
+.hedefSatirlar {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.55rem;
+}
+
+.hedefSatir {
+  display:               grid;
+  grid-template-columns: 70px 1fr auto 80px;
+  align-items:           center;
+  gap:                   0.65rem;
+  font-size:             0.78rem;
+}
+
+.hedefSure {
+  color:       var(--text-muted);
+  font-size:   0.7rem;
+  font-family: var(--font-mono);
+}
+
+.hedefFiyat {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color:       var(--text-primary);
+  font-size:   0.80rem;
+}
+
+.hedefFark { font-weight: 500; font-size: 0.72rem; text-align: right; }
+
+.hedefBar {
+  height:        4px;
+  background:    rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow:      hidden;
+}
+
+.hedefBarDolu {
+  height:        100%;
+  border-radius: 2px;
+  transition:    width 0.4s ease;
+}
+
+/* ── Sinyaller ── */
+.sinyaller {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.5rem;
+}
+
+.sinyal {
+  display:     flex;
+  align-items: center;
+  gap:         0.65rem;
+  font-size:   0.75rem;
+}
+
+.sinyalBadge {
+  font-size:      0.6rem;
+  font-weight:    500;
+  letter-spacing: 0.06em;
+  padding:        0.2rem 0.55rem;
+  border-radius:  4px;
+  flex-shrink:    0;
+  font-family:    var(--font-mono);
+  text-transform: uppercase;
+}
+
+.sinyalAd {
+  font-weight: 500;
+  color:       var(--text-primary);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+.sinyalAcik {
+  color:       var(--text-muted);
+  font-size:   0.7rem;
+  font-family: var(--font-mono);
+}
+
+/* ── Mini Tablo ── */
+.miniTablo {
+  background:    var(--panel-bg);
+  border:        1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  overflow:      hidden;
+}
+
+.miniTabloBaslik {
+  padding:        0.75rem 1.1rem;
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  border-bottom:  1px solid var(--panel-border);
+}
+
+.tablo {
+  width:           100%;
+  border-collapse: collapse;
+  font-size:       0.78rem;
+}
+
+.tablo thead tr th {
+  font-size:      0.6rem;
+  font-weight:    500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  padding:        0.6rem 0.85rem;
+  text-align:     left;
+  border-bottom:  1px solid var(--panel-border);
+}
+
+.tabloSatir {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  cursor:     pointer;
+  transition: background 0.1s;
+}
+
+.tabloSatir:hover { background: rgba(255,255,255,0.03); }
+.tabloSatirSecili { background: rgba(91,141,238,0.07) !important; }
+
+.tablo tbody tr td {
+  padding:        0.55rem 0.85rem;
+  vertical-align: middle;
+}
+
+.tabloSembol {
+  font-weight: 600;
+  font-size:   0.78rem;
+  color:       var(--text-primary);
+}
+
+.tabloIsim {
+  font-size:   0.62rem;
+  color:       var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top:  1px;
+}
+
+.tabloFiyat {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color:       var(--text-primary);
+  font-size:   0.78rem;
+}
+
+.tabloGuvenBar {
+  height:        4px;
+  background:    rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow:      hidden;
+  margin-bottom: 3px;
+}
+
+.tabloGuvenDolu {
+  height:        100%;
+  border-radius: 2px;
+  transition:    width 0.4s ease;
+}
+
+/* ── Uyarı ── */
+.uyari {
+  font-size:     0.7rem;
+  color:         var(--text-muted);
+  background:    rgba(251,191,36,0.05);
+  border:        1px solid rgba(251,191,36,0.14);
+  border-radius: var(--radius-sm);
+  padding:       0.65rem 1rem;
+  line-height:   1.55;
+  font-family:   var(--font-mono);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1000px) {
+  .govde { grid-template-columns: 1fr; }
+  .listePanel .liste { max-height: 320px; }
+}
+
+@media (max-width: 720px) {
+  .ozetSatir { grid-template-columns: repeat(2, 1fr); }
+  .hedefSatir { grid-template-columns: 60px 1fr auto; }
+  .hedefBar { display: none; }
+}

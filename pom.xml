@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.5</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.toyota</groupId>
+  <artifactId>finance-portal</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>finance-portal</name>
+  <description>FinansPortalı — Toyota &amp; 32Bit 2026</description>
+
+  <properties>
+    <java.version>17</java.version>
+    <springdoc.version>2.3.0</springdoc.version>
+    <otel.version>2.8.0</otel.version>
+    <totp.version>1.7.1</totp.version>
+    <statemachine.version>4.0.0</statemachine.version>
+  </properties>
+
+  <!-- ── Global Log4j2: spring-boot-starter-logging'i tümden dışla ── -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-logging</artifactId>
+        <version>${project.parent.version}</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         WEB
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         LOG4J2  (Req #4)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
+    </dependency>
+    <!-- Kafka Appender için log4j-core ile birlikte gelen sınıf yeterli;
+         Kafka topic'e loglama için ayrıca log4j2-kafka artifact gerekmez. -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         JPA / ORM  (Req #5)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECURITY + JWT / Keycloak  (Req #7)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         VALIDATION
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ACTUATOR / METRICS  (Req #10)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         OPENTELEMETRY  (Req #9)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-spring-boot-starter</artifactId>
+      <version>${otel.version}</version>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CACHE — Caffeine  (Req #16 Redis/Cache)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         KAFKA  (Req #12)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         FLYWAY  (Req #6)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SWAGGER / OPENAPI  (Req #18)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>${springdoc.version}</version>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         2FA — TOTP  (Req #8)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>dev.samstevens.totp</groupId>
+      <artifactId>totp-spring-boot-starter</artifactId>
+      <version>${totp.version}</version>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SPRING STATE MACHINE — jBPM-like workflow  (Req #15)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.statemachine</groupId>
+      <artifactId>spring-statemachine-core</artifactId>
+      <version>${statemachine.version}</version>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         DATABASE DRIVERS
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         LOMBOK
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TEST  (Req #21)
+         ═════════════════════════════════════════════════════════ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

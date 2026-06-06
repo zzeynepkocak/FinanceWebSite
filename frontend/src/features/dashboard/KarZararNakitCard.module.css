@@ -1,0 +1,44 @@
+/* ── KarZararNakitCard — quiet luxury ── */
+.section {
+  margin-bottom: 1.25rem;
+}
+.section:last-child { margin-bottom: 0; }
+
+.label {
+  margin:         0 0 0.25rem;
+  font-size:      0.62rem;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.value,
+.valuePositive {
+  margin:         0;
+  font-size:      1.45rem;
+  font-weight:    700;
+  color:          var(--text-primary);
+  letter-spacing: 0.02em;
+  font-family:    var(--font-mono);
+}
+
+.valuePositive {
+  color: var(--positive);
+}
+
+.percentPositive {
+  margin:      0.15rem 0 0;
+  font-size:   0.85rem;
+  color:       var(--positive);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.muted {
+  margin:         0.25rem 0 0;
+  font-size:      0.72rem;
+  color:          var(--text-muted);
+  font-family:    var(--font-mono);
+  letter-spacing: 0.04em;
+}

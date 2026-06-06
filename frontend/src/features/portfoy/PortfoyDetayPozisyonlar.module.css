@@ -1,0 +1,46 @@
+/* ── PortfoyDetayPozisyonlar — quiet luxury ── */
+.section {
+  background:      var(--panel-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border:          1px solid var(--panel-border);
+  border-radius:   var(--radius-md);
+  padding:         1.25rem;
+  box-shadow:      inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.title {
+  margin:      0 0 1rem;
+  font-size:   0.78rem;
+  color:       var(--text-primary);
+  font-weight: 600;
+}
+
+.tablo {
+  width:           100%;
+  border-collapse: collapse;
+  font-size:       0.8rem;
+  font-family:     var(--font-mono);
+}
+
+.tablo th,
+.tablo td {
+  padding:       0.5rem 0.75rem;
+  text-align:    left;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.tablo th {
+  background:     rgba(255,255,255,0.02);
+  font-weight:    600;
+  color:          var(--text-muted);
+  font-size:      0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tablo tbody tr { transition: background 0.15s; }
+.tablo tbody tr:hover { background: rgba(255,255,255,0.03); }
+.tablo tbody tr:last-child td { border-bottom: none; }
+
+.positive { color: var(--positive); font-weight: 500; }

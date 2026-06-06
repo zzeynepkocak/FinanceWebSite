@@ -1,0 +1,62 @@
+/* ── SonIslemler — quiet luxury ── */
+.list {
+  list-style: none;
+  margin:     0;
+  padding:    0;
+}
+
+.item {
+  display:               grid;
+  grid-template-columns: auto 1fr auto;
+  align-items:           center;
+  gap:                   1rem;
+  padding:               0.6rem 0.4rem;
+  border-bottom:         1px solid rgba(255,255,255,0.04);
+  font-size:             0.8rem;
+  transition:            background 0.15s;
+  border-radius:         var(--radius-sm);
+}
+
+.item:hover { background: rgba(255,255,255,0.03); }
+.item:last-child { border-bottom: none; }
+
+.left {
+  flex:      0 0 auto;
+  min-width: 0;
+}
+
+.asset {
+  font-weight:    500;
+  color:          var(--text-primary);
+  font-family:    var(--font-mono);
+  font-size:      0.8rem;
+  letter-spacing: 0.03em;
+}
+
+.type {
+  color:          var(--text-muted);
+  font-size:      0.65rem;
+  font-family:    var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.detail {
+  color:       var(--text-muted);
+  flex:        1;
+  min-width:   0;
+  font-family: var(--font-mono);
+  font-size:   0.75rem;
+}
+
+.positive {
+  color:       var(--positive);
+  font-weight: 500;
+  font-family: var(--font-mono);
+}
+
+.negative {
+  color:       var(--negative);
+  font-weight: 500;
+  font-family: var(--font-mono);
+}

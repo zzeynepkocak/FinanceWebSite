@@ -1,0 +1,341 @@
+/* ══════════════════════════════════════════════════════
+   Layout — Quiet Luxury Shell
+══════════════════════════════════════════════════════ */
+
+/* ── Layout shell ── */
+.layout {
+  display:    flex;
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width:           var(--sidebar-w);
+  flex-shrink:     0;
+  background:      rgba(7, 8, 15, 0.85);
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  border-right:    1px solid rgba(255,255,255,0.06);
+  display:         flex;
+  flex-direction:  column;
+  position:        sticky;
+  top:             0;
+  height:          100vh;
+  overflow-y:      auto;
+  overflow-x:      hidden;
+  transition:      width 0.25s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.10) transparent;
+  z-index:         50;
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 2px; }
+
+.sidebarCollapsed {
+  width: 52px;
+}
+
+/* ── Logo row ── */
+.sidebarLogo {
+  display:       flex;
+  align-items:   center;
+  gap:           0.6rem;
+  padding:       0.9rem 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink:   0;
+}
+
+.logoMark {
+  width:       28px;
+  height:      28px;
+  display:     grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-family:    var(--font-body);
+  font-weight:    600;
+  font-size:      0.9rem;
+  color:          var(--text-primary);
+  letter-spacing: 0.04em;
+  white-space:    nowrap;
+  overflow:       hidden;
+  flex:           1;
+}
+
+.collapseBtn {
+  margin-left:   auto;
+  background:    transparent;
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  color:         var(--text-muted);
+  width:         22px;
+  height:        22px;
+  display:       grid;
+  place-items:   center;
+  cursor:        pointer;
+  flex-shrink:   0;
+  transition:    all 0.18s;
+}
+.collapseBtn:hover {
+  border-color: rgba(255,255,255,0.18);
+  color:        var(--text-secondary);
+}
+
+/* ── Nav ── */
+.sidebarNav {
+  flex:           1;
+  padding:        0.5rem;
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+}
+
+.navGroup { margin-bottom: 0.12rem; }
+
+.navSection {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  width:           100%;
+  font-size:       0.58rem;
+  font-weight:     600;
+  letter-spacing:  0.18em;
+  text-transform:  uppercase;
+  color:           var(--text-muted);
+  padding:         0.65rem 0.6rem 0.25rem;
+  background:      transparent;
+  border:          none;
+  cursor:          pointer;
+  text-align:      left;
+  transition:      color 0.15s;
+}
+.navSection:hover { color: var(--text-secondary); }
+
+.navItem {
+  display:         flex;
+  align-items:     center;
+  gap:             0.55rem;
+  padding:         0.42rem 0.6rem;
+  border-radius:   var(--radius-sm);
+  color:           var(--text-muted);
+  font-size:       0.77rem;
+  font-weight:     400;
+  cursor:          pointer;
+  transition:      all 0.15s ease;
+  text-decoration: none;
+  border:          1px solid transparent;
+  border-left:     2px solid transparent;
+  white-space:     nowrap;
+  overflow:        hidden;
+}
+
+.navItem:hover {
+  color:             var(--text-primary);
+  background:        rgba(255,255,255,0.04);
+  border-left-color: rgba(255,255,255,0.15);
+}
+
+.navItemActive {
+  color:             var(--accent) !important;
+  background:        rgba(91,141,238,0.08) !important;
+  border-left-color: var(--accent) !important;
+}
+
+.navIcon  { flex-shrink: 0; display: flex; align-items: center; color: inherit; }
+.navLabel { font-family: var(--font-body); overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Sidebar footer ── */
+.sidebarFooter {
+  padding:      0.65rem 0.75rem;
+  border-top:   1px solid rgba(255,255,255,0.06);
+  flex-shrink:  0;
+}
+
+.userBlock {
+  display:       flex;
+  align-items:   center;
+  gap:           0.55rem;
+  cursor:        pointer;
+  padding:       0.45rem;
+  border-radius: var(--radius-sm);
+  transition:    background 0.15s;
+  border:        1px solid transparent;
+}
+.userBlock:hover {
+  background:   rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.06);
+}
+
+.avatar {
+  width:         28px;
+  height:        28px;
+  border-radius: 50%;
+  background:    rgba(91,141,238,0.10);
+  border:        1px solid rgba(91,141,238,0.25);
+  display:       grid;
+  place-items:   center;
+  font-size:     0.65rem;
+  font-weight:   600;
+  color:         var(--accent);
+  flex-shrink:   0;
+}
+
+.userInfo { flex: 1; min-width: 0; }
+
+.userName {
+  font-size:     0.75rem;
+  font-weight:   500;
+  color:         var(--text-primary);
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size:      0.6rem;
+  color:          var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family:    var(--font-mono);
+}
+
+/* ── Main area ── */
+.main {
+  flex:           1;
+  display:        flex;
+  flex-direction: column;
+  min-width:      0;
+  overflow:       hidden;
+}
+
+/* ── Top bar ── */
+.topbar {
+  height:          var(--topbar-h);
+  display:         flex;
+  align-items:     center;
+  gap:             0.85rem;
+  padding:         0 1.25rem;
+  background:      rgba(7, 8, 15, 0.80);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-bottom:   1px solid rgba(255,255,255,0.06);
+  position:        sticky;
+  top:             0;
+  z-index:         40;
+  flex-shrink:     0;
+}
+
+.liveTag {
+  display:        flex;
+  align-items:    center;
+  gap:            0.35rem;
+  font-size:      0.62rem;
+  font-weight:    500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  white-space:    nowrap;
+  font-family:    var(--font-mono);
+}
+
+.liveDot {
+  width:         5px;
+  height:        5px;
+  border-radius: 50%;
+  background:    var(--positive);
+  opacity:       0.7;
+}
+
+.topbarSearch {
+  flex:          1;
+  max-width:     360px;
+  display:       flex;
+  align-items:   center;
+  gap:           0.5rem;
+  padding:       0.4rem 0.85rem;
+  background:    rgba(255,255,255,0.04);
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  font-size:     0.78rem;
+  color:         var(--text-muted);
+  cursor:        text;
+  transition:    all 0.18s;
+  font-family:   var(--font-mono);
+}
+.topbarSearch:hover {
+  border-color: rgba(255,255,255,0.14);
+  background:   rgba(255,255,255,0.06);
+}
+
+.topbarRight {
+  margin-left: auto;
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+}
+
+.iconBtn {
+  position:      relative;
+  width:         30px;
+  height:        30px;
+  background:    transparent;
+  border:        1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+  color:         var(--text-muted);
+  display:       grid;
+  place-items:   center;
+  cursor:        pointer;
+  transition:    all 0.18s;
+}
+.iconBtn:hover {
+  border-color: rgba(255,255,255,0.16);
+  color:        var(--text-secondary);
+  background:   rgba(255,255,255,0.04);
+}
+
+.notifBadge {
+  position:      absolute;
+  top:           -4px;
+  right:         -4px;
+  background:    #f87171;
+  color:         #fff;
+  font-size:     0.5rem;
+  font-weight:   700;
+  width:         14px;
+  height:        14px;
+  border-radius: 50%;
+  display:       grid;
+  place-items:   center;
+  border:        1px solid rgba(7,8,15,0.8);
+}
+
+.topbarAvatar {
+  width:         28px;
+  height:        28px;
+  border-radius: 50%;
+  background:    rgba(91,141,238,0.10);
+  border:        1px solid rgba(91,141,238,0.25);
+  display:       grid;
+  place-items:   center;
+  font-size:     0.65rem;
+  font-weight:   600;
+  color:         var(--accent);
+  cursor:        pointer;
+  transition:    all 0.18s;
+  font-family:   var(--font-mono);
+}
+.topbarAvatar:hover {
+  border-color: rgba(91,141,238,0.4);
+  background:   rgba(91,141,238,0.15);
+}
+
+/* ── Page content ── */
+.content {
+  flex:       1;
+  padding:    1.25rem 1.5rem;
+  overflow-y: auto;
+}

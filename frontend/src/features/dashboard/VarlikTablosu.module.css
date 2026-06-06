@@ -1,0 +1,51 @@
+/* ── VarlikTablosu — quiet luxury ── */
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width:           100%;
+  border-collapse: collapse;
+  font-size:       0.8rem;
+  font-family:     var(--font-mono);
+}
+
+.table th,
+.table td {
+  padding:       0.58rem 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.table th:first-child,
+.table td:first-child { text-align: left; }
+
+.table th:not(:first-child),
+.table td:not(:first-child) { text-align: right; }
+
+.table th {
+  color:          var(--text-muted);
+  font-weight:    600;
+  font-size:      0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.table tbody tr { transition: background 0.15s; }
+.table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.table tbody tr:last-child td { border-bottom: none; }
+
+.symbol {
+  font-weight:    500;
+  color:          var(--text-primary);
+  letter-spacing: 0.03em;
+}
+
+.positive {
+  color:       var(--positive);
+  font-weight: 500;
+}
+
+.negative {
+  color:       var(--negative);
+  font-weight: 500;
+}
