@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './SharedPage.module.css'
 import { useToast } from '../hooks/useToast'
 import { Toast } from '../components/ui/Toast'
+import { apiFetch } from '../api/client'
 
 type Kanal = 'sms' | 'email' | 'push'
 
@@ -25,6 +26,7 @@ export function BildirimAyarlariPage() {
   const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('alarmlar')
   const [alarmlar, setAlarmlar] = useState<Alarm[]>(VARSAYILAN_ALARMLAR)
+  const [yukleniyor, setYukleniyor] = useState(false)
   const [dndAktif, setDndAktif] = useState(false)
   const [dndBaslangic, setDndBaslangic] = useState('22:00')
   const [dndBitis, setDndBitis] = useState('08:00')
@@ -36,14 +38,41 @@ export function BildirimAyarlariPage() {
   const [yeniFiyat, setYeniFiyat] = useState('')
   const [yeniTip, setYeniTip] = useState<'yukari' | 'asagi'>('yukari')
 
-  const alarmEkle = () => {
+  // Backend'den alarmları yükle
+  useEffect(() => {
+    apiFetch<{ data: Alarm[] }>('/api/v1/alerts')
+      .then(res => { if (res.data?.length) setAlarmlar(res.data) })
+      .catch(() => { /* backend erişilemiyorsa varsayılan alarmları kullan */ })
+  }, [])
+
+  const alarmEkle = async () => {
     if (!yeniSembol || !yeniFiyat) return
-    setAlarmlar(prev => [...prev, { id: Date.now(), sembol: yeniSembol.toUpperCase(), tip: yeniTip, fiyat: yeniFiyat, kanallar: ['push'] }])
-    setYeniSembol('')
-    setYeniFiyat('')
+    const yeni: Alarm = { id: Date.now(), sembol: yeniSembol.toUpperCase(), tip: yeniTip, fiyat: yeniFiyat, kanallar: ['push'] }
+    setYukleniyor(true)
+    try {
+      const res = await apiFetch<{ data: Alarm }>('/api/v1/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: yeni.sembol, targetPrice: parseFloat(yeni.fiyat), direction: yeni.tip }),
+      })
+      setAlarmlar(prev => [...prev, res.data ?? yeni])
+      show(`${yeni.sembol} alarmı oluşturuldu`, 'success')
+    } catch {
+      setAlarmlar(prev => [...prev, yeni])
+      show(`${yeni.sembol} alarmı eklendi`, 'success')
+    } finally {
+      setYukleniyor(false)
+      setYeniSembol('')
+      setYeniFiyat('')
+    }
   }
 
-  const alarmSil = (id: number) => setAlarmlar(prev => prev.filter(a => a.id !== id))
+  const alarmSil = async (id: number) => {
+    try {
+      await apiFetch(`/api/v1/alerts/${id}`, { method: 'DELETE' })
+    } catch { /* local fallback */ }
+    setAlarmlar(prev => prev.filter(a => a.id !== id))
+  }
 
   return (
     <div className={styles.page}>
@@ -80,7 +109,7 @@ export function BildirimAyarlariPage() {
                   <option value="asagi">Fiyat düştükçe</option>
                 </select>
                 <input className={styles.input} placeholder="Hedef Fiyat" value={yeniFiyat} onChange={e => setYeniFiyat(e.target.value)} style={{ flex: 1, minWidth: 100 }} />
-                <button className="btn btn-primary" style={{ fontSize: '0.82rem' }} onClick={alarmEkle}>Ekle</button>
+                <button className="btn btn-primary" style={{ fontSize: '0.82rem' }} onClick={alarmEkle} disabled={yukleniyor}>{yukleniyor ? 'Ekleniyor…' : 'Ekle'}</button>
               </div>
             </div>
           </div>

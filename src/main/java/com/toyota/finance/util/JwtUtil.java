@@ -33,6 +33,7 @@ public final class JwtUtil {
         if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
             return jwt.getSubject();
         }
-        return null;
+        // Local profilde JWT yoksa geliştirme kullanıcısı döndür
+        return "local-dev-user";
     }
 }

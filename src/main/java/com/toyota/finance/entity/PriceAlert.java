@@ -28,7 +28,6 @@ public class PriceAlert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false, length = 255)
     private String userId;
 
