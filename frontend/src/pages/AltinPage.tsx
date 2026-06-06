@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const ALTIN_FIYATLARI = {
   gram: { alis: 3842, satis: 3896, gunlukDegisim: +2.4 },
@@ -24,6 +26,7 @@ const ALTIN_PORTFÖY = [
 ]
 
 export function AltinPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('fiyatlar')
   const [altinTip, setAltinTip] = useState<'fiziksel' | 'kagit'>('fiziksel')
   const [secilenRafineri, setSecilenRafineri] = useState(RAFINERILER[0].ad)
@@ -49,9 +52,10 @@ export function AltinPage() {
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button className="btn btn-secondary">Satış Emri</button>
-          <button className="btn btn-primary">Alış Emri</button>
+          <button className="btn btn-primary" onClick={() => show('Alış emri iletildi ve işleme alındı', 'success')}>Alış Emri</button>
         </div>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

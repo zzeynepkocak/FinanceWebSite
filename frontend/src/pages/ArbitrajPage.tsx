@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type Coin = 'BTC' | 'ETH' | 'BNB' | 'SOL'
 
@@ -21,6 +23,7 @@ const FIRSATLAR = [
 const COINLER: Coin[] = ['BTC', 'ETH', 'BNB', 'SOL']
 
 export function ArbitrajPage() {
+  const { toast, show } = useToast()
   const [aktifCoin, setAktifCoin] = useState<Coin>('BTC')
   const [aktifTab, setAktifTab] = useState('matris')
   const [transferGonderildi, setTransferGonderildi] = useState<string | null>(null)
@@ -37,8 +40,9 @@ export function ArbitrajPage() {
           <h1 className={styles.pageTitle}>Arbitraj & Fiyat Farkı Monitörü</h1>
           <p className={styles.pageSub}>Borsa arası canlı fiyat karşılaştırması ve kar fırsatları</p>
         </div>
-        <button className="btn btn-primary">Fırsat Alarmı Kur</button>
+        <button className="btn btn-primary" onClick={() => show('Arbitraj alarmı kuruldu, fırsatlar takip ediliyor', 'success')}>Fırsat Alarmı Kur</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const ISLEMLER = [
   { id: 'TRX-48291', tarih: '2026-05-29 14:32', miktar: 48200, tip: 'Havale', karsi: 'Mehmet Yılmaz', ulke: 'TR', risk: 'Düşük', durum: 'Temiz' },
@@ -12,6 +14,7 @@ const ISLEMLER = [
 const YUKSEK_RISKLI_ULKELER = ['BVI', 'RU', 'IR', 'KP', 'SY', 'AF', 'MM']
 
 export function AMLPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('izleme')
   const [gunlukLimit] = useState(500000)
   const [gunlukKullanim] = useState(283200)
@@ -39,8 +42,9 @@ export function AMLPage() {
           <h1 className={styles.pageTitle}>AML & Uyum (Kara Para Aklamayla Mücadele)</h1>
           <p className={styles.pageSub}>SAR uyarıları, coğrafi kısıtlamalar, PEP durumu ve işlem izleme</p>
         </div>
-        <button className="btn btn-primary">SAR Raporu Oluştur</button>
+        <button className="btn btn-primary" onClick={() => show('SAR raporu oluşturuldu, Uyum Ekibine iletildi', 'success')}>SAR Raporu Oluştur</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Kritik Uyarı */}
       <div className={`${styles.alertCard} ${styles.alertDanger}`}>
