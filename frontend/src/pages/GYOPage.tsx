@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const MULKLER = [
   { id: 1, ad: 'İstanbul Kadıköy Rezidans', konum: 'Kadıköy, İstanbul', m2: 85, toplamPay: 10000, bedelMetrekare: 42000, kirGetirisi: 8.2, doluluk: 96, kiracıDurumu: 'Sözleşme aktif', renk: '#0066ff' },
@@ -15,6 +17,7 @@ const KIRA_DAGILIMLARI = [
 ]
 
 export function GYOPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('mulkler')
   const [secilenMulk, setSecilenMulk] = useState<number | null>(null)
   const [islemTip, setIslemTip] = useState<'al' | 'sat'>('al')
@@ -29,8 +32,9 @@ export function GYOPage() {
           <h1 className={styles.pageTitle}>GYO & Fraksiyonel Gayrimenkul</h1>
           <p className={styles.pageSub}>Paylı mülk yatırımı, kira getirisi ve ikincil piyasa</p>
         </div>
-        <button className="btn btn-primary">+ Portföyüme Ekle</button>
+        <button className="btn btn-primary" onClick={() => show('GYO portföyünüze eklendi', 'success')}>+ Portföyüme Ekle</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

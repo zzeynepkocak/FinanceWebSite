@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const FATURALAR = [
   { id: 1, ad: 'Elektrik (TEDAŞ)', tutar: 842, vadeTarihi: '2026-06-05', kategori: 'Elektrik', otomatik: true, durum: 'Bekliyor' },
@@ -18,6 +20,7 @@ const VERGI_DÖNEMLERI = [
 ]
 
 export function FaturaVergiPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('faturalar')
   const [kdvMatrah, setKdvMatrah] = useState('')
   const [kdvOran, setKdvOran] = useState('20')
@@ -48,8 +51,9 @@ export function FaturaVergiPage() {
           <h1 className={styles.pageTitle}>Fatura & Vergi Yönetimi</h1>
           <p className={styles.pageSub}>Bekleyen ödemeler ve vergi beyannameleri</p>
         </div>
-        <button className="btn btn-primary">+ E-Fatura Oluştur</button>
+        <button className="btn btn-primary" onClick={() => show('E-fatura oluşturuldu ve iletildi', 'success')}>+ E-Fatura Oluştur</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

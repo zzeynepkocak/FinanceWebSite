@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const MARKETLAR = [
   { id: 1, ad: 'Trendyol', logo: 'T', renk: '#FF6900', bagliMi: true, magaraAdi: 'TechStore TR', aylikCiro: 48200, siparis: 312 },
@@ -30,6 +32,7 @@ const STOK = [
 ]
 
 export function ETicaretPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('magazalar')
   const [erkenOdemeBasvuru, setErkenOdemeBasvuru] = useState(false)
 
@@ -42,8 +45,9 @@ export function ETicaretPage() {
           <h1 className={styles.pageTitle}>E-Ticaret Satıcı Finansmanı</h1>
           <p className={styles.pageSub}>Marketplace bağlantıları, kesintiler ve stok finansmanı</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Mağaza Bağla</button>
+        <button className="btn btn-primary" onClick={() => show('Mağaza bağlantısı kuruldu', 'success')}>+ Yeni Mağaza Bağla</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const MÜLKLER = [
   {
@@ -36,6 +38,7 @@ const BÖLGE_FİYATLARI = [
 ]
 
 export function GayrimenkulPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('mulkler')
   const [plakaArama, setPlakaArama] = useState('')
 
@@ -51,8 +54,9 @@ export function GayrimenkulPage() {
           <h1 className={styles.pageTitle}>Gayrimenkul & Sabit Varlıklar</h1>
           <p className={styles.pageSub}>Mülk portföyü ve varlık yönetimi</p>
         </div>
-        <button className="btn btn-primary">+ Mülk Ekle</button>
+        <button className="btn btn-primary" onClick={() => show('Mülk portföyünüze eklendi', 'success')}>+ Mülk Ekle</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

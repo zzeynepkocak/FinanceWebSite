@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type Firma = { id: number; ad: string; vergiNo: string; tip: string; sehir: string; bakiye: number; renk: string }
 const FIRMALAR: Firma[] = [
@@ -38,6 +40,7 @@ const ROLLER = [
 ]
 
 export function KurumsalPage() {
+  const { toast, show } = useToast()
   const [seciliFirma, setSeciliFirma] = useState<number>(1)
   const [aktifTab, setAktifTab] = useState('genel')
   const [maasOdeme, setMaasOdeme] = useState(false)
@@ -61,9 +64,10 @@ export function KurumsalPage() {
           <select className={styles.select} value={seciliFirma} onChange={e => setSeciliFirma(Number(e.target.value))}>
             {FIRMALAR.map(f => <option key={f.id} value={f.id}>{f.ad}</option>)}
           </select>
-          <button className="btn btn-primary">+ Yeni Firma</button>
+          <button className="btn btn-primary" onClick={() => show('Yeni firma profili oluşturuldu', 'success')}>+ Yeni Firma</button>
         </div>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Firma özet banner */}
       <div style={{ padding: '0.85rem 1rem', background: `${firma.renk}11`, border: `1px solid ${firma.renk}33`, borderRadius: 'var(--radius)', display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>

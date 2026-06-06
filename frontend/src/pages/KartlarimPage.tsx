@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 import kstyles from './KartlarimPage.module.css'
 
 /* ── Mock cards ── */
@@ -62,6 +64,7 @@ function KartGorseli({ kart }: { kart: typeof KARTLAR[0] }) {
 }
 
 export function KartlarimPage() {
+  const { toast, show } = useToast()
   const [aktifKart, setAktifKart] = useState(0)
   const [switches, setSwitches] = useState(
     KARTLAR.map(k => ({ internet: k.internet, yurtdisi: k.yurtdisi, temassiz: k.temassiz }))
@@ -83,8 +86,9 @@ export function KartlarimPage() {
           <h1 className={styles.pageTitle}>Kartlarım</h1>
           <p className={styles.pageSub}>{KARTLAR.length} kart — Kredi, Banka, Sanal</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Sanal Kart</button>
+        <button className="btn btn-primary" onClick={() => show('Yeni sanal kart oluşturuldu', 'success')}>+ Yeni Sanal Kart</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Kart seçici */}
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>

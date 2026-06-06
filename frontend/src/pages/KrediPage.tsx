@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const KREDI_KARTI_BASVURULARI = [
   { ad: 'Garanti Bonus Black', limit: 80000, faiz: '%2.49', renk: '#00a651', avantaj: 'Bonus puan, ücretsiz airport lounge' },
@@ -24,6 +26,7 @@ const IYILESTIRME_IPUÇLARI = [
 ]
 
 export function KrediPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('skor')
   const [krediTutar, setKrediTutar] = useState('100000')
   const [krediVade, setKrediVade] = useState('36')
@@ -53,8 +56,9 @@ export function KrediPage() {
           <h1 className={styles.pageTitle}>Kredi & Finansal Sağlık</h1>
           <p className={styles.pageSub}>Kredi skorunuz ve kredi ürünleri</p>
         </div>
-        <button className="btn btn-primary">Kredi Başvurusu</button>
+        <button className="btn btn-primary" onClick={() => show('Kredi başvurunuz alındı, 1-3 iş günü içinde dönüş yapılacak', 'success')}>Kredi Başvurusu</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.tabs}>
         {[
