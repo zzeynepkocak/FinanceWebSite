@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const POLIÇELER = [
   {
@@ -36,6 +38,7 @@ const RISK_SORULARI = [
 ]
 
 export function SigortaPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('poliçeler')
   const [hasarArac, setHasarArac] = useState('')
   const [hasarAciklama, setHasarAciklama] = useState('')
@@ -58,8 +61,9 @@ export function SigortaPage() {
           <h1 className={styles.pageTitle}>Sigorta & Risk Yönetimi</h1>
           <p className={styles.pageSub}>Poliçeleriniz ve risk profili</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Poliçe</button>
+        <button className="btn btn-primary" onClick={() => show('Yeni sigorta teklifi hazirlanıyor, e-posta ile bilgilendirileceksiniz', 'success')}>+ Yeni Poliçe</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

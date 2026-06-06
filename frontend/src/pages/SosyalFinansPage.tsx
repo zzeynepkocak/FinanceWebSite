@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const YATIRIMCILAR = [
   { id: 1, ad: 'Ahmet Yılmaz', kullanici: '@ahmetyilmaz', getiri: '+34.2%', takipci: 1204, portfoy: 'BIST100, Altın, USD', risk: 'Orta', puan: 98 },
@@ -21,6 +23,7 @@ const REFERANSLAR = [
 ]
 
 export function SosyalFinansPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('kopya')
   const [portfoyPaylas, setPortfoyPaylas] = useState(false)
   const [takipEdilenler, setTakipEdilenler] = useState<number[]>([])
@@ -39,8 +42,9 @@ export function SosyalFinansPage() {
           <h1 className={styles.pageTitle}>Sosyal Finans</h1>
           <p className={styles.pageSub}>Yatırımcı topluluğu, kopya trading ve referans takibi</p>
         </div>
-        <button className="btn btn-primary">+ Portföy Paylaş</button>
+        <button className="btn btn-primary" onClick={() => show('Portföyünüz toplulukla paylaşıldı', 'success')}>+ Portföy Paylaş</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Metrikler */}
       <div className={styles.metricsRow}>
