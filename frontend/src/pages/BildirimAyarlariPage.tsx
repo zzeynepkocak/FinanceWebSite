@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type Kanal = 'sms' | 'email' | 'push'
 
@@ -20,6 +22,7 @@ const WEBHOOKLAR = [
 ]
 
 export function BildirimAyarlariPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('alarmlar')
   const [alarmlar, setAlarmlar] = useState<Alarm[]>(VARSAYILAN_ALARMLAR)
   const [dndAktif, setDndAktif] = useState(false)
@@ -49,8 +52,9 @@ export function BildirimAyarlariPage() {
           <h1 className={styles.pageTitle}>Akıllı Bildirim & Otomasyon</h1>
           <p className={styles.pageSub}>Fiyat alarmlari, rahatsız etme saatleri, bot entegrasyonları ve webhook yönetimi</p>
         </div>
-        <button className="btn btn-primary">Ayarları Kaydet</button>
+        <button className="btn btn-primary" onClick={() => show('Bildirim ayarlarınız başarıyla kaydedildi', 'success')}>Ayarları Kaydet</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.tabs}>
         {[
@@ -187,11 +191,11 @@ export function BildirimAyarlariPage() {
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '0.25rem 0.55rem', whiteSpace: 'nowrap' }}>{w.olay}</span>
                 <span style={{ padding: '0.18rem 0.5rem', borderRadius: 100, fontSize: '0.68rem', fontWeight: 600, background: w.durum === 'Aktif' ? 'rgba(0,212,170,0.1)' : 'rgba(150,150,150,0.1)', color: w.durum === 'Aktif' ? 'var(--profit)' : 'var(--text-dim)', border: `1px solid ${w.durum === 'Aktif' ? 'rgba(0,212,170,0.3)' : 'var(--border)'}` }}>{w.durum}</span>
-                <button className="btn btn-secondary" style={{ fontSize: '0.72rem' }}>Test Et</button>
+                <button className="btn btn-secondary" style={{ fontSize: '0.72rem' }} onClick={() => show(`${w.isim} webhook testi başarılı`, 'success')}>Test Et</button>
               </div>
             </div>
           ))}
-          <button className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>+ Webhook Ekle</button>
+          <button className="btn btn-primary" style={{ alignSelf: 'flex-start' }} onClick={() => show('Webhook eklendi', 'success')}>+ Webhook Ekle</button>
         </div>
       )}
 
@@ -233,7 +237,7 @@ export function BildirimAyarlariPage() {
                       </label>
                     ))}
                   </div>
-                  <button className="btn btn-primary" style={{ width: '100%' }}>Ayarları Kaydet</button>
+                  <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => show('Rapor ayarları kaydedildi', 'success')}>Ayarları Kaydet</button>
                 </>
               )}
             </div>
