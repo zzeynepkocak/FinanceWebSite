@@ -1,7 +1,6 @@
 package com.toyota.finance.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toyota.finance.entity.ServiceTicket;
 import com.toyota.finance.repository.ServiceTicketRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * ServiceTicketController entegrasyon testleri.
  *
  * <p>local profili ile H2 veritabanı kullanır; Keycloak gerekmez.
- * JwtUtil.getCurrentUserId() local profilde null döndüğünden controller
- * 401 döndürür — bu beklenen davranış olarak test edilmiştir.</p>
+ * JwtUtil.getCurrentUserId() local profilde "local-dev-user" döndürür,
+ * bu nedenle CRUD işlemleri başarıyla çalışır.</p>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -52,46 +51,46 @@ class ServiceTicketControllerIntTest {
     }
 
     @Test
-    @DisplayName("GET /api/v1/tickets — kimlik yoksa 401 döner")
-    void getTickets_noAuth_returns401() throws Exception {
+    @DisplayName("GET /api/v1/tickets — başlangıçta boş liste döner")
+    void getTickets_returnsEmptyList() throws Exception {
         mockMvc.perform(get("/api/v1/tickets"))
-               .andExpect(status().isUnauthorized())
-               .andExpect(jsonPath("$.success").value(false));
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
-    @DisplayName("POST /api/v1/tickets — kimlik yoksa 401 döner")
-    void createTicket_noAuth_returns401() throws Exception {
+    @DisplayName("POST /api/v1/tickets — geçerli body ile ticket oluşturulur")
+    void createTicket_validBody_returns201() throws Exception {
         Map<String, String> body = Map.of(
-                "title", "Test Ticket",
+                "title",       "Test Ticket",
                 "description", "Test açıklama",
-                "priority", "MEDIUM",
-                "category", "Yazılım"
+                "priority",    "MEDIUM",
+                "category",    "Yazılım"
         );
 
         mockMvc.perform(post("/api/v1/tickets")
                        .contentType(MediaType.APPLICATION_JSON)
                        .content(objectMapper.writeValueAsString(body)))
-               .andExpect(status().isUnauthorized())
-               .andExpect(jsonPath("$.success").value(false));
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
-    @DisplayName("GET /api/v1/tickets/{id} — kimlik yoksa 401 döner")
-    void getTicketById_noAuth_returns401() throws Exception {
+    @DisplayName("GET /api/v1/tickets/{id} — olmayan ticket için 404 döner")
+    void getTicketById_notFound_returns404() throws Exception {
         mockMvc.perform(get("/api/v1/tickets/999"))
-               .andExpect(status().isUnauthorized());
+               .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("PATCH /api/v1/tickets/{id}/transition — kimlik yoksa 401 döner")
-    void transition_noAuth_returns401() throws Exception {
+    @DisplayName("PATCH /api/v1/tickets/{id}/transition — olmayan ticket için 404 döner")
+    void transition_notFound_returns404() throws Exception {
         Map<String, String> body = Map.of("status", "ASSIGNED");
 
-        mockMvc.perform(patch("/api/v1/tickets/1/transition")
+        mockMvc.perform(patch("/api/v1/tickets/999/transition")
                        .contentType(MediaType.APPLICATION_JSON)
                        .content(objectMapper.writeValueAsString(body)))
-               .andExpect(status().isUnauthorized());
+               .andExpect(status().isNotFound());
     }
 
     @Test

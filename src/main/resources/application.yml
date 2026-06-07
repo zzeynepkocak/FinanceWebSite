@@ -74,6 +74,13 @@ opensearch:
   url: ${OPENSEARCH_URL:http://localhost:9200}
   index: finance-portal-logs
 
+keycloak:
+  admin:
+    url: ${KEYCLOAK_URL:http://localhost:8080}
+    realm: toyota-finance
+    username: admin
+    password: admin
+
 logging:
   config: classpath:log4j2.xml
   level:
@@ -114,7 +121,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://keycloak:8080/realms/toyota-finance}
+          jwk-set-uri: ${KEYCLOAK_JWK_URI:http://keycloak:8080/realms/toyota-finance/protocol/openid-connect/certs}
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
@@ -180,6 +187,13 @@ springdoc:
 opensearch:
   url: ${OPENSEARCH_URL:http://opensearch:9200}
   index: finance-portal-logs
+
+keycloak:
+  admin:
+    url: ${KEYCLOAK_URL:http://keycloak:8080}
+    realm: toyota-finance
+    username: admin
+    password: admin
 
 logging:
   config: classpath:log4j2.xml

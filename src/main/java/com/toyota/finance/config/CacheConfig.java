@@ -58,7 +58,8 @@ public class CacheConfig {
                 "latestNews",
                 "newsByCategory",
                 "userAccounts",
-                "userAssets"
+                "userAssets",
+                "marketQuotes"
         ));
 
         return manager;
