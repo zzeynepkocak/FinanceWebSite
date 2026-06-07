@@ -199,6 +199,8 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       OPENSEARCH_URL: http://opensearch:9200
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_SDK_DISABLED: "false"
+      SPRING_AUTOCONFIGURE_EXCLUDE: ""
       FINNHUB_API_KEY: ${FINNHUB_API_KEY:-d72j16pr01qlfd9neho0d72j16pr01qlfd9nehog}
     depends_on:
       postgres:

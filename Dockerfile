@@ -15,8 +15,11 @@ WORKDIR /app
 
 RUN addgroup -S finans && adduser -S finans -G finans
 COPY --from=build /app/target/*.jar app.jar
-RUN chown finans:finans app.jar
+RUN mkdir -p /app/logs && chown -R finans:finans /app
 USER finans
 
 EXPOSE 8081
-ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "app.jar"]
+ENTRYPOINT ["java", \
+  "-Dspring.profiles.active=docker", \
+  "-Dspring.autoconfigure.exclude=io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration,io.opentelemetry.instrumentation.spring.autoconfigure.internal.instrumentation.webmvc.SpringWebMvc6InstrumentationAutoConfiguration", \
+  "-jar", "app.jar"]
