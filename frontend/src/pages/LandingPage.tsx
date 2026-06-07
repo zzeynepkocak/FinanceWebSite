@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/KeycloakProvider'
 import { paths } from '../routes/paths'
 import styles from './LandingPage.module.css'
 
@@ -173,8 +174,16 @@ function MiniChart({ up }: { up: boolean }) {
 
 export function LandingPage() {
   const navigate = useNavigate()
+  const { isAuthenticated, isLoading } = useAuth()
   const [menuAcik, setMenuAcik] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  // Zaten giriş yapılmışsa doğrudan panele yönlendir
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate(paths.home, { replace: true })
+    }
+  }, [isLoading, isAuthenticated, navigate])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
