@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus-finans
+    access: proxy
+    url: http://prometheus:9090
+    editable: true
