@@ -70,8 +70,10 @@ export const apiFetch = async <T = any>(
           errorMessage = 'Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.';
           // Token'ı temizle
           localStorage.removeItem('token');
-          // Login sayfasına yönlendir (window.location kullanarak)
-          window.location.href = '/login';
+          // Mock modda yönlendirme yapma; gerçek modda /giris'e yönlendir
+          if (import.meta.env.VITE_MOCK_AUTH !== 'true') {
+            window.location.href = '/giris';
+          }
           break;
         case 403:
           errorMessage = 'Bu işlem için yetkiniz bulunmuyor.';
