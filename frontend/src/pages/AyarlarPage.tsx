@@ -4,6 +4,7 @@ import { paths } from '../routes/paths'
 import styles from './SharedPage.module.css'
 import { useToast } from '../hooks/useToast'
 import { Toast } from '../components/ui/Toast'
+import { useAuth } from '../auth/KeycloakProvider'
 
 const SESSIONS = [
   { id: 1, cihaz: 'Chrome / Windows 11', konum: 'İstanbul, TR', ip: '85.34.12.77', zaman: 'Şu an aktif', aktif: true },
@@ -16,6 +17,7 @@ const PARA_BIRIMLERI = ['TRY ₺', 'USD $', 'EUR €', 'GBP £', 'BTC ₿']
 
 export function AyarlarPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { toast, show } = useToast()
   const [activeTab, setActiveTab] = useState('genel')
   const [sessions, setSessions] = useState(SESSIONS)
@@ -97,8 +99,8 @@ export function AyarlarPage() {
             <div className={styles.cardHeader}><span className={styles.cardTitle}>Profil Bilgileri</span></div>
             <div className={styles.cardBody} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {[
-                { label: 'Ad Soyad', value: 'Ahmet Yılmaz', type: 'text' },
-                { label: 'E-Posta', value: 'ahmet@example.com', type: 'email' },
+                { label: 'Ad Soyad', value: user ? `${user.firstName} ${user.lastName}`.trim() : '', type: 'text' },
+                { label: 'E-Posta', value: user?.email ?? '', type: 'email' },
                 { label: 'Telefon', value: '+90 555 123 4567', type: 'tel' },
               ].map(f => (
                 <div key={f.label}>
