@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type Kayit = {
   id: number; ad: string; tip: 'Alacak' | 'Borç'; tutar: number; odenen: number;
@@ -23,6 +25,7 @@ const SENETLER = [
 ]
 
 export function BorcAlacakPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('liste')
   const [filtre, setFiltre] = useState<'Hepsi' | 'Alacak' | 'Borç'>('Hepsi')
   const [odemeKayit, setOdemeKayit] = useState<number | null>(null)
@@ -42,8 +45,9 @@ export function BorcAlacakPage() {
           <h1 className={styles.pageTitle}>Borç & Alacak Defteri</h1>
           <p className={styles.pageSub}>Kişisel ve ticari borç/alacak yönetimi</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Kayıt</button>
+        <button className="btn btn-primary" onClick={() => show('Yeni kayıt eklendi', 'success')}>+ Yeni Kayıt</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

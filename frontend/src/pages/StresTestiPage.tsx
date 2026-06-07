@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const SENARYOLAR = [
   { id: 1, ad: '%20 TL Devalüasyonu', etki: -12.4, renk: 'var(--loss)', aciklama: 'Dövizli borçlar ve ithalat maliyetleri artar' },
@@ -19,6 +21,7 @@ const ANOMALI_VERISI = [
 ]
 
 export function StresTestiPage() {
+  const { toast, show } = useToast()
   const [aktifSenaryo, setAktifSenaryo] = useState<number | null>(null)
   const [aktifTab, setAktifTab] = useState('senaryo')
   const [portfolyoDegeri] = useState(2847340)
@@ -32,8 +35,9 @@ export function StresTestiPage() {
           <h1 className={styles.pageTitle}>Finansal Check-Up & Stres Testi</h1>
           <p className={styles.pageSub}>Portföy dayanıklılık analizi ve harcama anomali tespiti</p>
         </div>
-        <button className="btn btn-primary">Check-Up Başlat</button>
+        <button className="btn btn-primary" onClick={() => show('Finansal check-up başlatıldı, sonuçlar hesaplanıyor…', 'success')}>Check-Up Başlat</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Check-up skoru */}
       <div className={styles.metricsRow}>

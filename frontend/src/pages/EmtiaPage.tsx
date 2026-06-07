@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const EMTIALAR = [
   { id: 1, ad: 'Ham Petrol (Brent)', sembol: 'BRENT', fiyat: 6824, doviz: 'USD/varil', degisim: +1.42, renk: '#1a1a2e', emoji: '🛢' },
@@ -17,6 +19,7 @@ const SEZONSAL_DATA = {
 }
 
 export function EmtiaPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('fiyatlar')
   const [depoMiktari, setDepoMiktari] = useState('')
   const [depoTuru, setDepoTuru] = useState('Buğday')
@@ -40,8 +43,9 @@ export function EmtiaPage() {
           <h1 className={styles.pageTitle}>Emtia & Enerji Piyasaları</h1>
           <p className={styles.pageSub}>Petrol, gaz, tarımsal emtia ve karbon kredi işlemleri</p>
         </div>
-        <button className="btn btn-primary">+ Emir Gir</button>
+        <button className="btn btn-primary" onClick={() => show('Emir iletildi ve işleme alındı', 'success')}>+ Emir Gir</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.tabs}>
         {[

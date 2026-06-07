@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const SIVIL_TOPLUM = [
   { id: 1, ad: 'Türk Kızılay', kategori: 'İnsani Yardım', toplanan: 2840000, hedef: 5000000, bagisci: 18420 },
@@ -16,6 +18,7 @@ const KAMPANYALAR = [
 ]
 
 export function BagisPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('stk')
   const [mikroBagis, setMikroBagis] = useState(false)
   const [mikrYuzde, setMikroYuzde] = useState('1')
@@ -32,8 +35,9 @@ export function BagisPage() {
           <h1 className={styles.pageTitle}>Bağış & Sosyal Sorumluluk</h1>
           <p className={styles.pageSub}>STK bağışları, karbon dengeleme ve kitlesel fonlama projeleri</p>
         </div>
-        <button className="btn btn-primary">Vergi Makbuzu İndir</button>
+        <button className="btn btn-primary" onClick={() => show('Vergi makbuzu e-posta adresinize gönderildi', 'success')}>Vergi Makbuzu İndir</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

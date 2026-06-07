@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './auth';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_API_BASE ?? import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8081';
 
 export interface ApiFetchOptions extends RequestInit {
   skipAuth?: boolean;
@@ -70,8 +70,10 @@ export const apiFetch = async <T = any>(
           errorMessage = 'Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.';
           // Token'ı temizle
           localStorage.removeItem('token');
-          // Login sayfasına yönlendir (window.location kullanarak)
-          window.location.href = '/login';
+          // Mock modda yönlendirme yapma; gerçek modda /giris'e yönlendir
+          if (import.meta.env.VITE_MOCK_AUTH !== 'true') {
+            window.location.href = '/giris';
+          }
           break;
         case 403:
           errorMessage = 'Bu işlem için yetkiniz bulunmuyor.';

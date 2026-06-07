@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const DCA_PLANLARI = [
   { id: 1, varlik: 'Altın', miktar: 500, periyot: 'Aylık (Her 15)', toplamAlim: 18, toplamYatirim: 9000, anlikDeger: 11240, getiri: '+24.9%', renk: '#f0b429', durum: 'Aktif' },
@@ -12,6 +14,7 @@ const ALTIN_BIRIKIMLI = [7420, 7890, 8340, 8900, 9480, 10100, 11240]
 const ALTIN_ORTALAMA = [7420, 7600, 7750, 7880, 8000, 8200, 8550]
 
 export function DCAPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('planlar')
   const [secilenVarlik, setSecilenVarlik] = useState('Altın')
   const [miktar, setMiktar] = useState('500')
@@ -42,8 +45,9 @@ export function DCAPage() {
           <h1 className={styles.pageTitle}>Düzenli Alım (DCA)</h1>
           <p className={styles.pageSub}>Dollar Cost Averaging — Periyodik yatırım planlarınız</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Plan</button>
+        <button className="btn btn-primary" onClick={() => show('DCA planı oluşturuldu ve aktive edildi', 'success')}>+ Yeni Plan</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

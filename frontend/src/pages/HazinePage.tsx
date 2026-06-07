@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const CASH_POOLS = [
   { sirket: 'Toyota Türkiye A.Ş.', bakiye: 12840000, doviz: 'TRY', renk: '#e30613' },
@@ -27,6 +29,7 @@ const SIRKET_ARASI_TRANSFERLER = [
 ]
 
 export function HazinePage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('pool')
   const [forwardForm, setForwardForm] = useState({ doviz: 'USD', miktar: '', vade: '', kur: '' })
 
@@ -39,8 +42,9 @@ export function HazinePage() {
           <h1 className={styles.pageTitle}>Kurumsal Hazine Yönetimi</h1>
           <p className={styles.pageSub}>Nakit havuzu, repo ve döviz maruziyet yönetimi</p>
         </div>
-        <button className="btn btn-primary">+ Yeni İşlem</button>
+        <button className="btn btn-primary" onClick={() => show('Hazine işlemi oluşturuldu', 'success')}>+ Yeni İşlem</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

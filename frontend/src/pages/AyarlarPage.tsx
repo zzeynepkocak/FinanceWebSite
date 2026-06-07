@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../routes/paths'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
+import { useAuth } from '../auth/KeycloakProvider'
 
 const SESSIONS = [
   { id: 1, cihaz: 'Chrome / Windows 11', konum: 'İstanbul, TR', ip: '85.34.12.77', zaman: 'Şu an aktif', aktif: true },
@@ -14,6 +17,8 @@ const PARA_BIRIMLERI = ['TRY ₺', 'USD $', 'EUR €', 'GBP £', 'BTC ₿']
 
 export function AyarlarPage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const { toast, show } = useToast()
   const [activeTab, setActiveTab] = useState('genel')
   const [sessions, setSessions] = useState(SESSIONS)
   const [notifications, setNotifications] = useState({
@@ -43,6 +48,7 @@ export function AyarlarPage() {
           <p className={styles.pageSub}>Hesap, güvenlik ve kişiselleştirme ayarları</p>
         </div>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.tabs}>
         {TABS.map(t => (
@@ -93,8 +99,8 @@ export function AyarlarPage() {
             <div className={styles.cardHeader}><span className={styles.cardTitle}>Profil Bilgileri</span></div>
             <div className={styles.cardBody} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {[
-                { label: 'Ad Soyad', value: 'Ahmet Yılmaz', type: 'text' },
-                { label: 'E-Posta', value: 'ahmet@example.com', type: 'email' },
+                { label: 'Ad Soyad', value: user ? `${user.firstName} ${user.lastName}`.trim() : '', type: 'text' },
+                { label: 'E-Posta', value: user?.email ?? '', type: 'email' },
                 { label: 'Telefon', value: '+90 555 123 4567', type: 'tel' },
               ].map(f => (
                 <div key={f.label}>
@@ -102,7 +108,7 @@ export function AyarlarPage() {
                   <input className={styles.input} style={{ width: '100%', boxSizing: 'border-box' }} defaultValue={f.value} type={f.type} />
                 </div>
               ))}
-              <button className="btn btn-primary" style={{ marginTop: '0.25rem' }}>Kaydet</button>
+              <button className="btn btn-primary" style={{ marginTop: '0.25rem' }} onClick={() => show('Profil bilgileri güncellendi', 'success')}>Kaydet</button>
             </div>
           </div>
         </div>
@@ -165,7 +171,7 @@ export function AyarlarPage() {
                   <div className={styles.settingLabel}>🔑 Şifre Değiştir</div>
                   <div className={styles.settingDesc}>Son değişiklik: 45 gün önce</div>
                 </div>
-                <button className="btn btn-secondary" style={{ fontSize: '0.75rem' }}>Değiştir</button>
+                <button className="btn btn-secondary" style={{ fontSize: '0.75rem' }} onClick={() => show('Şifre değiştirme e-postası gönderildi', 'info')}>Değiştir</button>
               </div>
               <div className={styles.settingRow}>
                 <div className={styles.settingInfo}>
@@ -207,7 +213,7 @@ export function AyarlarPage() {
         <div className={styles.sectionCard}>
           <div className={styles.cardHeader}>
             <span className={styles.cardTitle}>Aktif Oturumlar & Cihaz Yönetimi</span>
-            <button className="btn btn-danger" style={{ fontSize: '0.75rem' }}>Tümünü Kapat</button>
+            <button className="btn btn-danger" style={{ fontSize: '0.75rem' }} onClick={() => { setSessions(s => s.filter(x => x.aktif)); show('Tüm diğer oturumlar kapatıldı', 'success') }}>Tümünü Kapat</button>
           </div>
           <div className={styles.cardBody} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {sessions.map(s => (
@@ -249,16 +255,16 @@ export function AyarlarPage() {
               </span>
             </div>
             {[
-              { label: 'Verileri İndir', desc: 'Tüm kişisel verilerinizin kopyasını alın (ZIP)', action: 'İndir' },
-              { label: 'Çerez Tercihleri', desc: 'Zorunlu olmayan çerezleri yönet', action: 'Yönet' },
-              { label: 'Veri Silme Talebi', desc: 'Hesabınızı ve verilerinizi kalıcı sil', action: 'Talep Et' },
-            ].map(({ label, desc, action }) => (
+              { label: 'Verileri İndir', desc: 'Tüm kişisel verilerinizin kopyasını alın (ZIP)', action: 'İndir', msg: 'Veri dışa aktarma talebiniz alındı, e-posta ile gönderilecek' },
+              { label: 'Çerez Tercihleri', desc: 'Zorunlu olmayan çerezleri yönet', action: 'Yönet', msg: 'Çerez tercihleri kaydedildi' },
+              { label: 'Veri Silme Talebi', desc: 'Hesabınızı ve verilerinizi kalıcı sil', action: 'Talep Et', msg: 'Silme talebiniz destek ekibine iletildi' },
+            ].map(({ label, desc, action, msg }) => (
               <div key={label} className={styles.settingRow}>
                 <div className={styles.settingInfo}>
                   <div className={styles.settingLabel}>{label}</div>
                   <div className={styles.settingDesc}>{desc}</div>
                 </div>
-                <button className="btn btn-secondary" style={{ fontSize: '0.75rem' }}>{action}</button>
+                <button className="btn btn-secondary" style={{ fontSize: '0.75rem' }} onClick={() => show(msg, 'info')}>{action}</button>
               </div>
             ))}
           </div>
@@ -270,7 +276,7 @@ export function AyarlarPage() {
         <div className={styles.sectionCard}>
           <div className={styles.cardHeader}>
             <span className={styles.cardTitle}>API Anahtarı Yönetimi</span>
-            <button className="btn btn-primary" style={{ fontSize: '0.75rem' }}>+ Yeni API Anahtarı</button>
+            <button className="btn btn-primary" style={{ fontSize: '0.75rem' }} onClick={() => show('Yeni API anahtarı oluşturuldu', 'success')}>+ Yeni API Anahtarı</button>
           </div>
           <div className={styles.cardBody} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {[
@@ -284,12 +290,12 @@ export function AyarlarPage() {
                 </div>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)', background: 'var(--bg)', padding: '0.35rem 0.65rem', borderRadius: 4, marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {api.anahtar}
-                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--accent)', fontSize: '0.72rem' }}>📋 Kopyala</button>
+                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--accent)', fontSize: '0.72rem' }} onClick={() => { navigator.clipboard.writeText(api.anahtar); show('API anahtarı kopyalandı', 'info') }}>📋 Kopyala</button>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                   {api.izin.map(i => <span key={i} className="badge badge-neutral">{i}</span>)}
                   <span style={{ fontSize: '0.68rem', color: 'var(--text-dim)', marginLeft: 'auto' }}>Oluşturma: {api.olusturma}</span>
-                  <button className="btn btn-danger" style={{ fontSize: '0.72rem', padding: '0.25rem 0.6rem' }}>İptal Et</button>
+                  <button className="btn btn-danger" style={{ fontSize: '0.72rem', padding: '0.25rem 0.6rem' }} onClick={() => show('API anahtarı iptal edildi', 'warn')}>İptal Et</button>
                 </div>
               </div>
             ))}

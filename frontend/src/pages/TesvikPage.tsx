@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const DESTEKLER = [
   { id: 1, ad: 'KOSGEB İşletme Geliştirme Desteği', kurum: 'KOSGEB', tur: 'Hibe', toplamBütce: 500000, harcanan: 320000, durum: 'Onaylı', bitis: '2026-12-31', vergeMuaf: 125000 },
@@ -17,6 +19,7 @@ const MILESTONES = [
 ]
 
 export function TesvikPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('destekler')
   const [secilenDestek, setSecilenDestek] = useState<number | null>(null)
 
@@ -37,8 +40,9 @@ export function TesvikPage() {
           <h1 className={styles.pageTitle}>Teşvik & Hibeler</h1>
           <p className={styles.pageSub}>KOSGEB, TÜBİTAK ve bakanlık destekleri ile proje bütçe takibi</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Başvuru</button>
+        <button className="btn btn-primary" onClick={() => show('Teşvik başvurunuz sisteme kaydedildi', 'success')}>+ Yeni Başvuru</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

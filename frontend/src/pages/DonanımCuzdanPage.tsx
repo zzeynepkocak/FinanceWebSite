@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 type Adim = {
   baslik: string
@@ -27,6 +29,7 @@ const SEED_KELIMELER = [
 ]
 
 export function DonanımCuzdanPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('cihazlar')
   const [baglaniyorId, setBaglaniyorId] = useState<string | null>(null)
   const [baglandiId, setBaglandiId] = useState<string | null>('Ledger Nano X')
@@ -63,8 +66,9 @@ export function DonanımCuzdanPage() {
           <h1 className={styles.pageTitle}>Donanım Cüzdanı & Cold Storage</h1>
           <p className={styles.pageSub}>Ledger/Trezor eşleştirme, air-gapped QR imzalama ve seed doğrulama</p>
         </div>
-        <button className="btn btn-primary">+ Yeni Cihaz Ekle</button>
+        <button className="btn btn-primary" onClick={() => show('Cihaz eşleştirme başlatıldı', 'success')}>+ Yeni Cihaz Ekle</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {baglandiId && (
         <div className={`${styles.alertCard} ${styles.alertSuccess}`}>

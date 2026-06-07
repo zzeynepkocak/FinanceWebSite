@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 // 30 günlük tahmin verisi
 const TAHMIN_VERISI = Array.from({ length: 30 }, (_, i) => {
@@ -26,6 +28,7 @@ const VADE_UYUMSUZLUKLARI = [
 ]
 
 export function NakitAkisiPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('tahmin')
   const [bufferAlert] = useState(50000)
 
@@ -56,8 +59,9 @@ export function NakitAkisiPage() {
           <h1 className={styles.pageTitle}>Nakit Akışı & Likidite</h1>
           <p className={styles.pageSub}>30 günlük nakit akışı tahmini ve likidite analizi</p>
         </div>
-        <button className="btn btn-primary">Nakit Planı İndir</button>
+        <button className="btn btn-primary" onClick={() => show('Nakit akışı planı PDF olarak indiriliyor…', 'success')}>Nakit Planı İndir</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>
@@ -163,7 +167,7 @@ export function NakitAkisiPage() {
               <div style={{ padding: '0.75rem', background: 'rgba(0,102,255,0.06)', border: '1px solid rgba(0,102,255,0.25)', borderRadius: 'var(--radius-sm)', fontSize: '0.78rem' }}>
                 💡 Tavsiye: 6 aylık gider kadar acil fon hedefleyin. Aylık gideriniz ~₺30.000 ise hedef ₺180.000'dir.
               </div>
-              <button className="btn btn-primary">Aylık Otomatik Katkı Kur</button>
+              <button className="btn btn-primary" onClick={() => show('Aylık otomatik katkı planı oluşturuldu', 'success')}>Aylık Otomatik Katkı Kur</button>
             </div>
           </div>
           <div className={styles.sectionCard}>

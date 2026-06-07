@@ -1,20 +1,13 @@
-// Keycloak tabanlı auth — geriye dönük uyumluluk için tutuldu
+/**
+ * Auth yardımcıları — KeycloakProvider üzerinden token alır.
+ * window.keycloak JS adaptörü artık kullanılmıyor.
+ */
 
 export const getAuthHeaders = async (): Promise<HeadersInit> => {
-  const token = await window.__getKeycloakToken?.()
+  const token = (await window.__getKeycloakToken?.()) ?? null
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (token) headers['Authorization'] = `Bearer ${token}`
   return headers
-}
-
-export const isKeycloakInitialized = (): boolean =>
-  !!(window.keycloak && window.keycloak['authenticated'])
-
-export const getCurrentUserId = (): string | null => {
-  if (!isKeycloakInitialized()) return null
-  const kc = window.keycloak as Record<string, unknown>
-  const parsed = kc['tokenParsed'] as Record<string, unknown> | undefined
-  return (kc['subject'] as string) ?? (parsed?.['sub'] as string) ?? null
 }
 
 export const setAuthToken = (token: string): void => {
@@ -26,4 +19,4 @@ export const removeAuthToken = (): void => {
 }
 
 export const isAuthenticated = (): boolean =>
-  isKeycloakInitialized() || !!localStorage.getItem('fallback_token')
+  !!window.__getKeycloakToken || !!localStorage.getItem('fallback_token')

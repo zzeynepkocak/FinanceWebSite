@@ -2,7 +2,6 @@ const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8081'
 
 declare global {
   interface Window {
-    keycloak?: Record<string, unknown>
     __getKeycloakToken?: () => Promise<string | null>
   }
 }
@@ -14,14 +13,8 @@ interface ApiResponse<T> {
   data: T
 }
 
-/** ApiResponse sarmalını açar; ham veri dönüyorsa olduğu gibi döner */
 function unwrap<T>(json: unknown): T {
-  if (
-    json !== null &&
-    typeof json === 'object' &&
-    'success' in json &&
-    'data' in json
-  ) {
+  if (json !== null && typeof json === 'object' && 'success' in json && 'data' in json) {
     const resp = json as ApiResponse<T>
     if (!resp.success) throw new Error(resp.message ?? 'API hatası')
     return resp.data
@@ -46,24 +39,7 @@ export async function publicFetch<T>(path: string, options: RequestInit = {}): P
 
 /** Auth token gerektiren backend isteği */
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  let token: string | null = null
-
-  try {
-    const kc = window.keycloak
-    if (kc && kc['authenticated']) {
-      // Süresi dolmuşsa yenile
-      if (typeof kc['isTokenExpired'] === 'function' && (kc['isTokenExpired'] as (n: number) => boolean)(5)) {
-        await (kc['updateToken'] as (n: number) => Promise<boolean>)(30)
-      }
-      token = (kc['token'] as string) ?? null
-    }
-
-    if (!token) {
-      token = (await window.__getKeycloakToken?.()) ?? null
-    }
-  } catch {
-    // token alınamazsa devam et — backend local profilde auth istemez
-  }
+  const token = (await window.__getKeycloakToken?.()) ?? null
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -74,9 +50,9 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   const res = await fetch(`${API_BASE}${path}`, { ...options, headers })
 
   if (!res.ok) {
-    if (res.status === 401 && window.keycloak) {
-      const login = window.keycloak['login'] as (() => void) | undefined
-      login?.()
+    // Mock modda yönlendirme yapma; gerçek modda /giris'e yönlendir
+    if (res.status === 401 && import.meta.env.VITE_MOCK_AUTH !== 'true') {
+      window.location.href = '/giris'
     }
     throw new Error(`${res.status}: ${res.statusText}`)
   }

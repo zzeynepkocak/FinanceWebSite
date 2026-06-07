@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 /* ── Mock data ── */
 const KATEGORILER = [
@@ -72,6 +74,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 }
 
 export function ButcePage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('genel')
   const toplamButce = KATEGORILER.reduce((s, k) => s + k.butce, 0)
   const toplamHarcanan = KATEGORILER.reduce((s, k) => s + k.harcanan, 0)
@@ -84,8 +87,9 @@ export function ButcePage() {
           <h1 className={styles.pageTitle}>Bütçe & Tasarruf Planlama</h1>
           <p className={styles.pageSub}>Mayıs 2026 — Kalan 1 gün</p>
         </div>
-        <button className="btn btn-primary">+ Bütçe Kategorisi Ekle</button>
+        <button className="btn btn-primary" onClick={() => show('Yeni bütçe kategorisi eklendi', 'success')}>+ Bütçe Kategorisi Ekle</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Özet kartları */}
       <div className={styles.metricsRow}>

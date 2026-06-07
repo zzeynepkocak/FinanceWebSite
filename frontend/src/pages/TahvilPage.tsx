@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const TAHVILLER = [
   { id: 1, isim: 'TÜFE\'ye Endeksli Devlet Tahvili', kod: 'TR-DT-2028', tip: 'Devlet', faiz: 4.5, gercekFaiz: true, vade: '2028-03-15', kupon: 'Yılda 2x', nominal: 1000, getiri: 48.2, paraBirimi: 'TRY' },
@@ -18,6 +20,7 @@ const KUPON_TAKVIMI = [
 ]
 
 export function TahvilPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('liste')
   const [filtreTip, setFiltreTip] = useState('Tümü')
   const [hesapNominal, setHesapNominal] = useState('10000')
@@ -46,8 +49,9 @@ export function TahvilPage() {
           <h1 className={styles.pageTitle}>Tahvil & Sabit Getirili Menkul Kıymetler</h1>
           <p className={styles.pageSub}>Devlet tahvilleri, Eurobondlar ve özel sektör bonoları</p>
         </div>
-        <button className="btn btn-primary">+ Tahvil Al</button>
+        <button className="btn btn-primary" onClick={() => show('Tahvil alım emri iletildi ve işleme alındı', 'success')}>+ Tahvil Al</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

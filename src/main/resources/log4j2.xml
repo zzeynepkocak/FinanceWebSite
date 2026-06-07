@@ -26,11 +26,6 @@
       <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
     </Console>
 
-    <!-- 2. JSON Console — production (structlog) -->
-    <Console name="JsonConsoleAppender" target="SYSTEM_OUT">
-      <JsonTemplateLayout eventTemplateUri="classpath:log4j2-json-layout.json"/>
-    </Console>
-
     <!-- 3. Rolling File -->
     <RollingFile name="FileAppender"
                  fileName="${LOG_DIR}/${APP_NAME}.log"
@@ -61,11 +56,10 @@
   <!-- ── Logger'lar ────────────────────────────────────────────── -->
   <Loggers>
 
-    <!-- Uygulama paketi -->
+    <!-- Uygulama paketi — KafkaAppender sadece docker profilinde env var varsa -->
     <Logger name="com.toyota.finance" level="DEBUG" additivity="false">
       <AppenderRef ref="ConsoleAppender"/>
       <AppenderRef ref="FileAppender"/>
-      <AppenderRef ref="KafkaAppender"/>
     </Logger>
 
     <!-- Spring Security gürültüsünü azalt -->

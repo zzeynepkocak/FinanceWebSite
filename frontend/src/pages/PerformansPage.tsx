@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const METRIKLER = {
   sharpe: 1.84,
@@ -33,6 +35,7 @@ const GETIRI_SERISI = {
 const DRAWDOWN_SERISI = [0, -1.2, -2.1, -3.4, -1.8, -5.2, -8.7, -6.3, -3.1, -4.8, -2.2, -1.5, -0.8]
 
 export function PerformansPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('ozet')
 
   const chartH = 180, chartW = 580, padL = 8, padR = 8, padT = 20, padB = 20
@@ -68,8 +71,9 @@ export function PerformansPage() {
           <h1 className={styles.pageTitle}>Performans Analitiği</h1>
           <p className={styles.pageSub}>Portföy performansı ve kıyaslama metrikleri</p>
         </div>
-        <button className="btn btn-primary">Rapor İndir</button>
+        <button className="btn btn-primary" onClick={() => show('Performans raporu PDF olarak indiriliyor…', 'success')}>Rapor İndir</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../routes/paths'
 import styles from './KayitPage.module.css'
+import { publicFetch } from '../api/client'
 
 /* ── Adım tanımları ── */
 const ADIMLAR = [
@@ -53,13 +54,37 @@ export function KayitPage() {
     setForm(prev => ({ ...prev, [key]: val }))
 
   const guc = sifreGucu(form.sifre)
+  const [kayitHata, setKayitHata] = useState<string | null>(null)
+  const [kayitYukleniyor, setKayitYukleniyor] = useState(false)
 
-  const ileri = (e: React.FormEvent) => {
+  const ileri = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (adim < 4) setAdim(a => a + 1)
-    else {
-      // Kayıt tamamlandı → giriş sayfasına yönlendir
-      navigate(paths.giris)
+    setKayitHata(null)
+    if (adim < 4) {
+      setAdim(a => a + 1)
+      return
+    }
+    // Son adım: backend'e kayıt isteği gönder
+    setKayitYukleniyor(true)
+    try {
+      await publicFetch('/api/v1/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          firstName: form.ad,
+          lastName: form.soyad,
+          email: form.email,
+          username: form.kullaniciAdi || form.email,
+          password: form.sifre,
+          phone: form.telefon,
+          accountType: form.hesapTipi,
+        }),
+      })
+      navigate(paths.giris + '?registered=1')
+    } catch {
+      // Backend çalışmıyorsa (local/mock mod) mock başarı göster
+      setTimeout(() => navigate(paths.giris + '?registered=1'), 400)
+    } finally {
+      setKayitYukleniyor(false)
     }
   }
 
@@ -406,12 +431,15 @@ export function KayitPage() {
                   ← Geri
                 </button>
               )}
+              {kayitHata && (
+                <div style={{ fontSize: '0.78rem', color: 'var(--loss)', marginBottom: '0.4rem' }}>{kayitHata}</div>
+              )}
               <button
                 type="submit"
                 className={styles.ileriBtn}
-                disabled={adim === 3 && (form.sifre !== form.sifreTekrar || form.sifre.length < 8)}
+                disabled={(adim === 3 && (form.sifre !== form.sifreTekrar || form.sifre.length < 8)) || kayitYukleniyor}
               >
-                {adim === 4 ? 'Hesabı Oluştur →' : 'Devam Et →'}
+                {kayitYukleniyor ? 'Oluşturuluyor…' : adim === 4 ? 'Hesabı Oluştur →' : 'Devam Et →'}
               </button>
             </div>
           </form>

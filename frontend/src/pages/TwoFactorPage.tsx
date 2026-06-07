@@ -10,19 +10,44 @@ interface SetupData {
 
 type Step = 'intro' | 'setup' | 'verify' | 'success'
 
-export function TwoFactorPage() {
-  const [step, setStep]         = useState<Step>('intro')
-  const [setupData, setSetupData] = useState<SetupData | null>(null)
-  const [code, setCode]         = useState('')
-  const [error, setError]       = useState<string | null>(null)
-  const [loading, setLoading]   = useState(false)
-  const [copied, setCopied]     = useState(false)
+const isMockMode = import.meta.env.VITE_MOCK_AUTH === 'true'
 
+/* ── Mock TOTP secret (base32) ─────────────────────────────────────── */
+const MOCK_SECRET = 'JBSWY3DPEHPK3PXP'
+
+function buildMockSetupData(): SetupData {
+  const issuer  = 'FinansPortali'
+  const account = 'kullanici@toyota-finans.com.tr'
+  const otpauth = `otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(account)}?secret=${MOCK_SECRET}&issuer=${encodeURIComponent(issuer)}&algorithm=SHA1&digits=6&period=30`
+  // QR kodu Google Charts API ile üret (geliştirme ortamı)
+  const qrUrl   = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(otpauth)}&choe=UTF-8`
+  return {
+    secret:        MOCK_SECRET,
+    qrCodeDataUri: qrUrl,
+    message:       'Bu demo ortamı için geçerli bir TOTP QR kodudur. Herhangi bir 6 haneli kod ile doğrulayabilirsiniz.',
+  }
+}
+
+export function TwoFactorPage() {
+  const [step, setStep]           = useState<Step>('intro')
+  const [setupData, setSetupData] = useState<SetupData | null>(null)
+  const [code, setCode]           = useState('')
+  const [error, setError]         = useState<string | null>(null)
+  const [loading, setLoading]     = useState(false)
+  const [copied, setCopied]       = useState(false)
+
+  /* ── Setup ── */
   async function handleSetup() {
     setLoading(true); setError(null)
     try {
-      const data = await publicFetch<SetupData>('/api/v1/auth/2fa/setup', { method: 'POST' })
-      setSetupData(data)
+      if (isMockMode) {
+        // Mock mod: backend'e gitmeden yerel veri üret
+        await new Promise(r => setTimeout(r, 400))
+        setSetupData(buildMockSetupData())
+      } else {
+        const data = await publicFetch<SetupData>('/api/v1/auth/2fa/setup', { method: 'POST' })
+        setSetupData(data)
+      }
       setStep('setup')
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : '2FA kurulumu başlatılamadı')
@@ -31,17 +56,24 @@ export function TwoFactorPage() {
     }
   }
 
+  /* ── Verify ── */
   async function handleVerify(e: React.FormEvent) {
     e.preventDefault()
-    if (!setupData || !code.trim()) { setError('Lütfen kodu giriniz'); return }
+    if (!setupData || !code.trim()) { setError('Lütfen 6 haneli kodu giriniz'); return }
     setLoading(true); setError(null)
     try {
-      await apiFetch<{ valid: boolean }>('/api/v1/auth/2fa/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ secret: setupData.secret, code: code.trim() }),
-      })
-      setStep('success')
+      if (isMockMode) {
+        // Mock mod: herhangi bir 6 haneli kod geçerli
+        await new Promise(r => setTimeout(r, 600))
+        setStep('success')
+      } else {
+        await apiFetch<{ valid: boolean }>('/api/v1/auth/2fa/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ secret: setupData.secret, code: code.trim() }),
+        })
+        setStep('success')
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Kod doğrulanamadı. Lütfen tekrar deneyin.')
       setCode('')
@@ -66,6 +98,7 @@ export function TwoFactorPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
+
         {/* ── Intro ── */}
         {step === 'intro' && (
           <div className={styles.section}>
@@ -75,7 +108,7 @@ export function TwoFactorPage() {
             <h1 className={styles.title}>İki Faktörlü Doğrulama</h1>
             <p className={styles.desc}>
               Hesabınızı korumak için TOTP tabanlı iki faktörlü doğrulamayı etkinleştirin.
-              Google Authenticator, Authy veya Microsoft Authenticator gibi uygulamalarla çalışır.
+              Google Authenticator, Authy veya Microsoft Authenticator uygulamalarıyla çalışır.
             </p>
 
             <div className={styles.featureList}>
@@ -92,6 +125,13 @@ export function TwoFactorPage() {
                 <span>Kimlik avı saldırılarına karşı koruma</span>
               </div>
             </div>
+
+            {isMockMode && (
+              <div className={styles.infoBox}>
+                <span className={styles.infoIcon}>🧪</span>
+                <span>Mock mod aktif — backend olmadan çalışır. Doğrulama adımında herhangi bir 6 haneli kod kabul edilir.</span>
+              </div>
+            )}
 
             {error && <div className={styles.error}>{error}</div>}
 
@@ -110,7 +150,15 @@ export function TwoFactorPage() {
             </p>
 
             <div className={styles.qrWrap}>
-              <img src={setupData.qrCodeDataUri} alt="2FA QR Kodu" className={styles.qrImg} />
+              <img
+                src={setupData.qrCodeDataUri}
+                alt="2FA QR Kodu"
+                className={styles.qrImg}
+                onError={e => {
+                  // QR yüklenemezse placeholder göster
+                  (e.target as HTMLImageElement).style.display = 'none'
+                }}
+              />
             </div>
 
             <div className={styles.secretBox}>
@@ -139,7 +187,9 @@ export function TwoFactorPage() {
           <div className={styles.section}>
             <h1 className={styles.title}>Kodu Doğrulayın</h1>
             <p className={styles.desc}>
-              Authenticator uygulamanızda görünen 6 haneli kodu girin.
+              {isMockMode
+                ? 'Mock mod: herhangi bir 6 haneli kodu girin (ör: 123456)'
+                : 'Authenticator uygulamanızda görünen 6 haneli kodu girin.'}
             </p>
 
             <form onSubmit={handleVerify} className={styles.verifyForm}>
@@ -214,6 +264,7 @@ export function TwoFactorPage() {
             </button>
           </div>
         )}
+
       </div>
     </div>
   )

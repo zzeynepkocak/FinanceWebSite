@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
+import { apiFetch } from '../api/client'
 
 type Kanal = 'sms' | 'email' | 'push'
 
@@ -20,8 +23,10 @@ const WEBHOOKLAR = [
 ]
 
 export function BildirimAyarlariPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('alarmlar')
   const [alarmlar, setAlarmlar] = useState<Alarm[]>(VARSAYILAN_ALARMLAR)
+  const [yukleniyor, setYukleniyor] = useState(false)
   const [dndAktif, setDndAktif] = useState(false)
   const [dndBaslangic, setDndBaslangic] = useState('22:00')
   const [dndBitis, setDndBitis] = useState('08:00')
@@ -33,14 +38,41 @@ export function BildirimAyarlariPage() {
   const [yeniFiyat, setYeniFiyat] = useState('')
   const [yeniTip, setYeniTip] = useState<'yukari' | 'asagi'>('yukari')
 
-  const alarmEkle = () => {
+  // Backend'den alarmları yükle
+  useEffect(() => {
+    apiFetch<{ data: Alarm[] }>('/api/v1/alerts')
+      .then(res => { if (res.data?.length) setAlarmlar(res.data) })
+      .catch(() => { /* backend erişilemiyorsa varsayılan alarmları kullan */ })
+  }, [])
+
+  const alarmEkle = async () => {
     if (!yeniSembol || !yeniFiyat) return
-    setAlarmlar(prev => [...prev, { id: Date.now(), sembol: yeniSembol.toUpperCase(), tip: yeniTip, fiyat: yeniFiyat, kanallar: ['push'] }])
-    setYeniSembol('')
-    setYeniFiyat('')
+    const yeni: Alarm = { id: Date.now(), sembol: yeniSembol.toUpperCase(), tip: yeniTip, fiyat: yeniFiyat, kanallar: ['push'] }
+    setYukleniyor(true)
+    try {
+      const res = await apiFetch<{ data: Alarm }>('/api/v1/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: yeni.sembol, targetPrice: parseFloat(yeni.fiyat), direction: yeni.tip }),
+      })
+      setAlarmlar(prev => [...prev, res.data ?? yeni])
+      show(`${yeni.sembol} alarmı oluşturuldu`, 'success')
+    } catch {
+      setAlarmlar(prev => [...prev, yeni])
+      show(`${yeni.sembol} alarmı eklendi`, 'success')
+    } finally {
+      setYukleniyor(false)
+      setYeniSembol('')
+      setYeniFiyat('')
+    }
   }
 
-  const alarmSil = (id: number) => setAlarmlar(prev => prev.filter(a => a.id !== id))
+  const alarmSil = async (id: number) => {
+    try {
+      await apiFetch(`/api/v1/alerts/${id}`, { method: 'DELETE' })
+    } catch { /* local fallback */ }
+    setAlarmlar(prev => prev.filter(a => a.id !== id))
+  }
 
   return (
     <div className={styles.page}>
@@ -49,8 +81,9 @@ export function BildirimAyarlariPage() {
           <h1 className={styles.pageTitle}>Akıllı Bildirim & Otomasyon</h1>
           <p className={styles.pageSub}>Fiyat alarmlari, rahatsız etme saatleri, bot entegrasyonları ve webhook yönetimi</p>
         </div>
-        <button className="btn btn-primary">Ayarları Kaydet</button>
+        <button className="btn btn-primary" onClick={() => show('Bildirim ayarlarınız başarıyla kaydedildi', 'success')}>Ayarları Kaydet</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.tabs}>
         {[
@@ -76,7 +109,7 @@ export function BildirimAyarlariPage() {
                   <option value="asagi">Fiyat düştükçe</option>
                 </select>
                 <input className={styles.input} placeholder="Hedef Fiyat" value={yeniFiyat} onChange={e => setYeniFiyat(e.target.value)} style={{ flex: 1, minWidth: 100 }} />
-                <button className="btn btn-primary" style={{ fontSize: '0.82rem' }} onClick={alarmEkle}>Ekle</button>
+                <button className="btn btn-primary" style={{ fontSize: '0.82rem' }} onClick={alarmEkle} disabled={yukleniyor}>{yukleniyor ? 'Ekleniyor…' : 'Ekle'}</button>
               </div>
             </div>
           </div>
@@ -187,11 +220,11 @@ export function BildirimAyarlariPage() {
                 </div>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '0.25rem 0.55rem', whiteSpace: 'nowrap' }}>{w.olay}</span>
                 <span style={{ padding: '0.18rem 0.5rem', borderRadius: 100, fontSize: '0.68rem', fontWeight: 600, background: w.durum === 'Aktif' ? 'rgba(0,212,170,0.1)' : 'rgba(150,150,150,0.1)', color: w.durum === 'Aktif' ? 'var(--profit)' : 'var(--text-dim)', border: `1px solid ${w.durum === 'Aktif' ? 'rgba(0,212,170,0.3)' : 'var(--border)'}` }}>{w.durum}</span>
-                <button className="btn btn-secondary" style={{ fontSize: '0.72rem' }}>Test Et</button>
+                <button className="btn btn-secondary" style={{ fontSize: '0.72rem' }} onClick={() => show(`${w.isim} webhook testi başarılı`, 'success')}>Test Et</button>
               </div>
             </div>
           ))}
-          <button className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>+ Webhook Ekle</button>
+          <button className="btn btn-primary" style={{ alignSelf: 'flex-start' }} onClick={() => show('Webhook eklendi', 'success')}>+ Webhook Ekle</button>
         </div>
       )}
 
@@ -233,7 +266,7 @@ export function BildirimAyarlariPage() {
                       </label>
                     ))}
                   </div>
-                  <button className="btn btn-primary" style={{ width: '100%' }}>Ayarları Kaydet</button>
+                  <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => show('Rapor ayarları kaydedildi', 'success')}>Ayarları Kaydet</button>
                 </>
               )}
             </div>

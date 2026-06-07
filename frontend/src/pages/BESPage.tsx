@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const FONLAR = [
   { ad: 'Hisse Senedi Fonu', kod: 'BES-HSF', deger: 42800, yüzde: 38, getiri12ay: 24.8, renk: '#0066ff' },
@@ -31,6 +33,7 @@ const DAGITIM_PROFILLERI = {
 }
 
 export function BESPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('ozet')
   const [seciliProfil, setSeciliProfil] = useState<'agresif' | 'dengeli' | 'muhafazakar'>('dengeli')
   const [otoDurum, setOtoDurum] = useState(true)
@@ -54,9 +57,10 @@ export function BESPage() {
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button className="btn btn-secondary">Katkı Payı Artır</button>
-          <button className="btn btn-primary">Fon Değiştir</button>
+          <button className="btn btn-primary" onClick={() => show('Fon değişiklik talebi iletildi', 'success')}>Fon Değiştir</button>
         </div>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className={styles.metricsRow}>
         <div className={styles.metricCard}>

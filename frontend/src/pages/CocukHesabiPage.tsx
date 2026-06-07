@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styles from './SharedPage.module.css'
+import { useToast } from '../hooks/useToast'
+import { Toast } from '../components/ui/Toast'
 
 const COCUKLAR = [
   { id: 1, ad: 'Ayşe', yas: 10, bakiye: 2840, harcilik: 150, hedef: 'Bisiklet', hedefTutar: 3500, rozetler: ['kitap', 'matematik', 'spor'] },
@@ -30,6 +32,7 @@ const ROZET_IKONLARI: Record<string, { icon: string; ad: string; renk: string }>
 }
 
 export function CocukHesabiPage() {
+  const { toast, show } = useToast()
   const [aktifTab, setAktifTab] = useState('hesaplar')
   const [secilenCocuk, setSecilenCocuk] = useState(1)
   const [kisitlamalar, setKisitlamalar] = useState(KATEGORI_KISITLARI)
@@ -48,8 +51,9 @@ export function CocukHesabiPage() {
           <h1 className={styles.pageTitle}>Çocuk Hesapları (Kumbara)</h1>
           <p className={styles.pageSub}>Dijital harçlık, görev ödülleri ve ebeveyn kontrolleri</p>
         </div>
-        <button className="btn btn-primary">+ Çocuk Hesabı Aç</button>
+        <button className="btn btn-primary" onClick={() => show('Çocuk hesabı başvurusu alındı', 'success')}>+ Çocuk Hesabı Aç</button>
       </div>
+      {toast && <Toast message={toast.message} type={toast.type} />}
 
       {/* Çocuk Seçici */}
       <div style={{ display: 'flex', gap: '0.75rem' }}>
